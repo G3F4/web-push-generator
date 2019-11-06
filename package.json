@@ -1,0 +1,31 @@
+{
+  "name": "web-push-generator",
+  "description": "Web Push notifications generator",
+  "version": "0.0.1",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "serve build",
+    "build": "rm -rf build && mkdir build && yarn run build:client && yarn run build:server",
+    "build:client": "cd client && yarn run build && cp -a build/. ../build && cd -",
+    "build:server": "cd server && yarn run build && cp -a build/. ../build && cd -",
+    "test": "cd server && yarn test && cd - && cd client && yarn test && cd -"
+  },
+  "dependencies": {
+    "serve": "11.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/G3F4/web-push-generator.git"
+  },
+  "keywords": [
+    "web-push",
+    "notifications",
+    "generator"
+  ],
+  "author": "G3F4",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/G3F4/web-push-generator/issues"
+  },
+  "homepage": "https://github.com/G3F4/web-push-generator#readme"
+}
