@@ -1,20 +1,16 @@
 language: node_js
-
 node_js:
-  - "12"
-
+- '12'
 cache:
   directories:
-    - node_modules
-
+  - node_modules
 script:
-  - yarn test
-  - yarn build
-
+- yarn test
+- yarn build
 deploy:
   provider: heroku
   api_key:
-    secure: DkObiosGkkAduBI/cx6VIW0l44eL3BgQxq5B6Tf08JIC6CleBeze5mGOXbQaOSyaBBZxK02ICDUw+v+k1I1KvhO92VmLjPLV/LNz7bVO3hHk/E9J9I6aNxpZJynxMxVRXkiCGaYgwEKj5TEYjeYmRhcyZcN3nFUTaBEkkx9KXQSmahucp6PxkqwxYxhmSHNy9j4ZUHv1zyo9mwIXty2I4J93bbrQfqbxo07456TK6kl1nfW+6RtJBGfyOZIisfgsFCTnOeBpoJN9MDhN2Gq/BuWvDmeeKReqzGDby8Y5M1cXV2D58KgmYe/UNeJ2uOAOh9fiBDG1W8y7/gd5kZheMmqMVONf/orbUjPs0AjHya7T0ot0cSP6qEHE3xzo9Acd3BEsU+ObEri066Wz91ISN9IB5CI5WRfX3+xXXfDCSo5em24MWeHEWEKcsPGS4HCfezFwW/Q1vLK86x0s2cgmMJaNQb0kN3DVvUwUWKDls+2eY0tn2If+eV/ZaXtg8g0PPuTcobqI89T3Pj5KgSxs0bxi7f/yP+LhMHxeJBCsp4/pnrFUK9JK7eFJGQA4Ms1F7LdD7F16qUOQ13czUrRHm1LzijKcqbMrV2OESQlKKqrFO2lyjBvv91BMpwyigzaaM83LgjTZW5tkI7XFKPuHIDJbCdUB96R+iuqxnq8uCL8=
+    secure: 3kBzxSjPrBXzTun1JJM7ixDDszPQsXwtBFm6rI/ISVmSeTQ1uUB+XJ2xrFF30cUmHMB9UdGD3AxqoCEbA8NMlzmq9s5GEYWtSmeah16G10TPbl7j7Qw3xDvspzKp1Ccr4oH/GVIGBvCjt0pDnnIexVZ9qDiTK4QCX34HLxMbWXSmH8xNQun3sAyoV1otqvU43Qk0n2s5IsHdhT559+yTzbO44SYBJyQ9XdyWfUmos2/BX2ocCRtwjAlvKu/N01c9afv65p9Pqlc13CCkTo8yCTkhqFgQwQTppJkM2mLtH5JEx37IcVLW526Mz7Wl1noY5uqYS+doEYjUVNTZ0bKvSJYieodH1Yp693Agy4V4sLPh6N8+LSici17UX1GNn1mLpGQsG98CLMhCSDmfHrS9+cw4sLJ4IiRMnCBie6PEjyJV6zaIYcjaGQnzx06sD+28vIKyAKtYY6Lgviv/Ek+S7xYfVYYy2Q+K3ubHZtzwDbQD0zpJ6wnR6iDNgo3oS5LXA5hobxmHZbuHcq76uNcd4zCqiWU3oI7LYEphAjAGSGVAxs2PhmmK+Jpbz7/mOY7ZgEND0ptigXo9QKoY5R3y3J4NISJHT9SMSKjl73LtUg9ZEmJy9it5NVZFCl2ZqxJVPnC+dtK2RGJVmwcyB+GMGCgjcdAV5ibHbuXqQVWGifg=
   app: web-push-generator
   local_dir: build
   on:
