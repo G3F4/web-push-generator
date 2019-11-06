@@ -1,2 +1,0 @@
-(this["webpackJsonpweb-push-generator-client"]=this["webpackJsonpweb-push-generator-client"]||[]).push([[0],{3:function(e,n,t){e.exports=t(9)},8:function(e,n,t){},9:function(e,n,t){"use strict";t.r(n);var r=t(0),o=t.n(r),u=t(2),c=t.n(u),a=(t(8),function(){return o.a.createElement("div",null,"Web Push Generator")});c.a.render(o.a.createElement(a,null),document.getElementById("root"))}},[[3,1,2]]]);
-//# sourceMappingURL=main.cfa9654b.chunk.js.map

@@ -63,3 +63,7 @@ typings/
 
 # ide
 .idea
+
+#build
+build
+../../build

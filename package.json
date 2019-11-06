@@ -4,14 +4,19 @@
   "version": "0.0.1",
   "main": "src/index.ts",
   "scripts": {
-    "start": "serve build",
+    "start": "serve -s build",
     "build": "rm -rf build && mkdir build && yarn run build:client && yarn run build:server",
     "build:client": "cd client && yarn run build && cp -a build/. ../build && cd -",
     "build:server": "cd server && yarn run build && cp -a build/. ../build && cd -",
-    "test": "cd server && yarn test && cd - && cd client && yarn test && cd -"
+    "test": "CI=true cd server && yarn test && cd - && cd client && yarn test && cd -"
   },
   "dependencies": {
-    "serve": "11.2.0"
+    "@types/react": "16.9.11",
+    "@types/react-dom": "16.9.4",
+    "react": "16.11.0",
+    "react-dom": "16.11.0",
+    "serve": "11.2.0",
+    "typescript": "3.7.2"
   },
   "repository": {
     "type": "git",
@@ -27,5 +32,8 @@
   "bugs": {
     "url": "https://github.com/G3F4/web-push-generator/issues"
   },
-  "homepage": "https://github.com/G3F4/web-push-generator#readme"
+  "homepage": "https://github.com/G3F4/web-push-generator#readme",
+  "devDependencies": {
+    "react-scripts": "3.2.0"
+  }
 }
