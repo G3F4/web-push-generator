@@ -1,5 +1,5 @@
 import React from 'react';
-import registerUserSubscription from "./service-worker/registerUserSubscription";
+import registerUserSubscription from './service-worker/registerUserSubscription';
 import testUserSubscriptions from './service-worker/testUserSubscriptions';
 
 const handleActivateNotifications = async () => {

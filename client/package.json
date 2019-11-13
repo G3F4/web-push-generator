@@ -2,14 +2,14 @@
   "name": "web-push-generator-client",
   "license": "MIT",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "HTTPS=true react-scripts start",
+    "build": "HTTPS=true react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint './src/**/*.{ts,tsx}'",
     "lint:fix": "eslint './src/**/*.{ts,tsx}' --fix"
   },
-  "proxy": "http://localhost:5555",
+  "proxy": "https://localhost:5555",
   "dependencies": {
     "@types/jest": "24.0.22",
     "@types/node": "12.12.6",

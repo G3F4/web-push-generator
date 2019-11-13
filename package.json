@@ -1,23 +1,30 @@
 {
   "name": "web-push-generator",
   "description": "Web Push notifications generator",
-  "version": "0.0.1",
-  "main": "src/index.ts",
+  "version": "0.1.0",
   "scripts": {
-    "start": "serve -s build",
-    "build": "rm -rf build && mkdir build && yarn run build:client && yarn run build:server",
-    "build:client": "cd client && yarn run build && cp -a build/. ../build && cd -",
-    "build:server": "cd server && yarn run build && cp -a build/. ../build && cd -",
+    "start": "ts-node -r dotenv/config build",
+    "secure": "rm -rf build/https && mkdir build/https && openssl genrsa -out build/https/fastify.key 2048 && openssl req -new -x509 -key build/https/fastify.key -out build/https/fastify.crt -days 3650 -subj /CN=localhost",
+    "build": "rm -rf build && yarn run build:server && yarn run build:client",
+    "build:client": "cd client && yarn run build && cd - && mv client/build build/public",
+    "build:server": "cd server && yarn run build && cd - && cp -rf ./server/build ./build",
     "test": "CI=true cd server && yarn test && cd - && cd client && yarn test && cd -"
   },
   "dependencies": {
     "@types/node": "12.12.6",
+    "@types/web-push": "3.3.0",
+    "fastify": "2.10.0",
+    "fastify-static": "2.5.0",
+    "ts-node": "8.5.0",
+    "typescript": "3.7.2",
+    "web-push": "3.4.1"
+  },
+  "devDependencies": {
     "@types/react": "16.9.11",
     "@types/react-dom": "16.9.4",
     "react": "16.11.0",
     "react-dom": "16.11.0",
-    "serve": "11.2.0",
-    "typescript": "3.7.2"
+    "react-scripts": "3.2.0"
   },
   "repository": {
     "type": "git",
@@ -33,8 +40,5 @@
   "bugs": {
     "url": "https://github.com/G3F4/web-push-generator/issues"
   },
-  "homepage": "https://github.com/G3F4/web-push-generator#readme",
-  "devDependencies": {
-    "react-scripts": "3.2.0"
-  }
+  "homepage": "https://github.com/G3F4/web-push-generator#readme"
 }

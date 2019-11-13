@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "module": "commonjs",
+    "target": "es2017",
+    "lib": [
+      "dom",
+      "esnext"
+    ],
+    "sourceMap": true,
+    "jsx": "react",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "experimentalDecorators": true,
+    "noErrorTruncation": true,
+    "skipLibCheck": true,
+    "isolatedModules": false,
+    "resolveJsonModule": true,
+    "esModuleInterop": true
+  },
+  "include": [
+    "./"
+  ]
+}

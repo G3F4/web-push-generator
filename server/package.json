@@ -5,7 +5,7 @@
   "scripts": {
     "start": "ts-node -r dotenv/config $npm_package_main",
     "dev": "ts-node-dev --respawn --transpileOnly -r dotenv/config $npm_package_main",
-    "build": "rm -rf build && echo \"building server\" && mkdir build && cp src/index.ts build",
+    "build": "rm -rf build && echo \"building server\" && mkdir build && cp -rf ./src/* ./build",
     "test": "echo \"no test specified\" && exit 0",
     "lint": "eslint -r dotenv/config './src/**/*.{ts,tsx}'",
     "lint:fix": "eslint -r dotenv/config './src/**/*.{ts,tsx}' --fix"
@@ -15,6 +15,7 @@
     "@types/web-push": "3.3.0",
     "dotenv": "8.2.0",
     "fastify": "2.10.0",
+    "fastify-static": "2.5.0",
     "ts-node": "8.4.1",
     "typescript": "3.7.2",
     "web-push": "3.4.1"
