@@ -67,6 +67,7 @@ typings/
 #build
 build
 ../../build
+server/src/https
 
 #env
 .env
