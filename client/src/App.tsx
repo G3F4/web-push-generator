@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { Button, Typography } from 'antd';
+import React, { useEffect, useState } from 'react';
 import ReactJson from 'react-json-view'
 import registerUserSubscription from './service-worker/registerUserSubscription';
 import testAllSubscriptions from './testAllSubscriptions';
 import testSingleSubscription from './testSingleSubscription';
+
+const { Title } = Typography;
 
 const handleTestSubscription = async (subscription: Subscription) => {
   try {
@@ -46,18 +49,18 @@ const App: React.FC = () => {
 
   return (
     <div>
-      Web Push Generator
+      <Title>Web Push Generator</Title>
       <div>
-        <button onClick={handleActivateNotifications}>activate notifications</button>
+        <Button onClick={handleActivateNotifications}>activate notifications</Button>
       </div>
       <div>
-        <button onClick={handleTestNotifications}>test all subscriptions</button>
+        <Button onClick={handleTestNotifications}>test all subscriptions</Button>
       </div>
       <ul>
       {subscriptions.map(subscription => (
         <li key={subscription.endpoint}>
           <ReactJson src={subscription} collapsed />
-          <button onClick={() => handleTestSubscription(subscription)}>test subscription</button>
+          <Button onClick={() => handleTestSubscription(subscription)}>test subscription</Button>
         </li>
       ))}
       </ul>
