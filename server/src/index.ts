@@ -2,7 +2,7 @@ import fastify from 'fastify';
 import fastifyStatic from 'fastify-static';
 import { readFileSync } from 'fs';
 import path from 'path';
-import notificationsEndpoint from './endpoints/notificationsEndpoint';
+import subscriptionsEndpoint from './endpoints/subscriptionsEndpoint';
 
 const server = fastify({
   https: {
@@ -16,7 +16,7 @@ server.register(fastifyStatic, {
   root: path.join(__dirname, 'public'),
 });
 
-notificationsEndpoint(server);
+subscriptionsEndpoint(server);
 
 const start = async () => {
   try {

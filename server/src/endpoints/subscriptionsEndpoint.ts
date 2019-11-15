@@ -18,7 +18,27 @@ const testPayload = JSON.stringify({
 initWebPush();
 
 export default function(server: Server) {
-  server.post('/notifications/test', async () => {
+  server.get('/subscriptions', async () => {
+    const subscriptions = db.getSubscriptions();
+
+    return { subscriptions };
+  });
+
+  server.post('/subscriptions', async request => {
+    const subscriptionData = request.body;
+
+    db.saveSubscription(subscriptionData);
+
+    try {
+      await sendNotification(subscriptionData, testPayload);
+
+      return { send: true };
+    } catch (e) {
+      return { send: false };
+    }
+  });
+
+  server.post('/subscriptions/test-all', async () => {
     const subscriptions = db.getSubscriptions();
 
     const responses = await Promise.all(subscriptions.map(async (subscription) => sendNotification(subscription, testPayload)));
@@ -26,13 +46,11 @@ export default function(server: Server) {
     return { subscriptionsCount: responses.length };
   });
 
-  server.post('/notifications/add', async request => {
-    const subscriptionData = request.body;
-
-    db.saveSubscription(subscriptionData);
+  server.post('/subscriptions/test-single', async request => {
+    const subscription = request.body;
 
     try {
-      await sendNotification(subscriptionData, testPayload);
+      await sendNotification(subscription, testPayload);
 
       return { send: true };
     } catch (e) {

@@ -1,6 +1,6 @@
-export default async function testUserSubscriptions() {
+export default async function testAllSubscriptions() {
   try {
-    await fetch(`/notifications/test`, {
+    await fetch(`/subscriptions/test-all`, {
       credentials: 'same-origin',
       method: 'POST',
       headers: {
