@@ -5,6 +5,7 @@
   "scripts": {
     "start": "ts-node -r dotenv/config $npm_package_main",
     "dev": "ts-node-dev --respawn --transpileOnly -r dotenv/config $npm_package_main",
+    "secure": "rm -rf src/https && mkdir src/https && openssl genrsa -out src/https/fastify.key 2048 && openssl req -new -x509 -key src/https/fastify.key -out src/https/fastify.crt -days 3650 -subj /CN=localhost",
     "build": "rm -rf build && echo \"building server\" && mkdir build && cp -rf ./src/* ./build",
     "test": "echo \"no test specified\" && exit 0",
     "lint": "eslint -r dotenv/config './src/**/*.{ts,tsx}'",

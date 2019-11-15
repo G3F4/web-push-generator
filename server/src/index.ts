@@ -6,14 +6,14 @@ import notificationsEndpoint from './endpoints/notificationsEndpoint';
 
 const server = fastify({
   https: {
-    key: readFileSync(path.join(__dirname, '..', 'https', 'fastify.key')),
-    cert: readFileSync(path.join(__dirname, '..', 'https', 'fastify.crt'))
+    key: readFileSync(path.join(__dirname, 'https', 'fastify.key')),
+    cert: readFileSync(path.join(__dirname, 'https', 'fastify.crt'))
   }
 });
 
 //@ts-ignore
 server.register(fastifyStatic, {
-  root: path.join(__dirname, '..', 'public'),
+  root: path.join(__dirname, 'public'),
 });
 
 notificationsEndpoint(server);
