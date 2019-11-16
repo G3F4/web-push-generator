@@ -55,20 +55,19 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
 
   return (
     <Form layout="inline" onSubmit={handleSubmit}>
-      <Collapse defaultActiveKey="1">
-        <Panel header="Basic" key="1">
-          <Form.Item validateStatus={titleError ? 'error' : ''} help={titleError || ''} label="Title">
-            <Tooltip title="prompt text">
-              {getFieldDecorator('title', {
-                rules: [{ required: true, message: 'Please input notification title.' }],
-              })(
-                <TextArea
-                  placeholder="Enter title"
-                />,
-              )}
-            </Tooltip>
-          </Form.Item>
-          <Form.Item validateStatus={bodyError ? 'error' : ''} help={bodyError || ''} label="Body">
+      <Collapse>
+        <Form.Item validateStatus={titleError ? 'error' : ''} help={titleError || ''} label="Title">
+          <Tooltip title="prompt text">
+            {getFieldDecorator('title', {
+              rules: [{ required: true, message: 'Please input notification title.' }],
+            })(
+              <TextArea
+                placeholder="Enter title"
+              />,
+            )}
+          </Tooltip>
+        </Form.Item>
+        <Form.Item validateStatus={bodyError ? 'error' : ''} help={bodyError || ''} label="Body">
             <Tooltip title="prompt text">
               {getFieldDecorator('body', {
                 rules: [{ required: true, message: 'Please input notification body.' }],
@@ -79,8 +78,7 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
               )}
             </Tooltip>
           </Form.Item>
-        </Panel>
-        <Panel header="More" key="2">
+        <Panel header="More" key="more">
           <Form.Item label="Icon" validateStatus={iconError ? 'error' : ''} help={iconError || ''}>
             <Tooltip title="prompt text">
               {getFieldDecorator('icon', {
@@ -139,7 +137,7 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
             </Tooltip>
           </Form.Item>
         </Panel>
-        <Panel header="Actions" key="3">
+        <Panel header="Actions" key="actions">
           <Form.Item label="First action title">
             <Tooltip title="prompt text">
               {getFieldDecorator('firstActionTitle')(
