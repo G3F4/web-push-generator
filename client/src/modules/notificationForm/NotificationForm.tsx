@@ -1,10 +1,18 @@
-import { Button, Card, Collapse, Form, Icon, Input, Select, Tooltip } from 'antd';
+import { Button, Card, Form, Icon, Input, Radio, Tooltip } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import React, { FC, useEffect } from 'react';
 
 function hasErrors(fieldsError: any) {
-  return Object.keys(fieldsError).some(field => fieldsError[field]);
+  return Object.keys(fieldsError).some(field => {
+    if (field === 'keys' || field === 'names') {
+      return false;
+    }
+
+    return fieldsError[field];
+  });
 }
+
+let id = 0;
 
 export interface NotificationFormProps {
   userSubscription: any;
@@ -22,13 +30,12 @@ interface FormValues {
   firstActionId: string;
   firstActionTitle: string;
   firstActionIcon: string;
+  keys: any[];
+  names: any[];
 }
 
-const { Option } = Select;
-const { Panel } = Collapse;
-
 const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProps> = (props) => {
-  const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = props.form;
+  const { getFieldDecorator, getFieldsError, getFieldError, getFieldValue, isFieldTouched } = props.form;
 
   useEffect(() => {
     // To disabled submit button at the beginning.
@@ -40,7 +47,9 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
     event.preventDefault();
     props.form.validateFields((err, values) => {
       if (!err) {
-        props.onSend(values);
+        const { keys, names, ...rest } = values;
+
+        props.onSend({ actions: names ? names.filter(Boolean).map((name, index) => ({ action: index, title: name })) : [], ...rest });
       }
     });
   };
@@ -52,19 +61,62 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
   const badgeError = isFieldTouched('badge') && getFieldError('badge');
   const imageError = isFieldTouched('image') && getFieldError('image');
   const dirError = isFieldTouched('dir') && getFieldError('dir');
-  const firstActionIconError = isFieldTouched('firstActionIcon') && getFieldError('firstActionIcon');
-  const secondActionIconError = isFieldTouched('secondActionIcon') && getFieldError('secondActionIcon');
 
+  const remove = (k: number) => {
+    const { form } = props;
+    // can use data-binding to get
+    const keys = form.getFieldValue('keys');
+
+    // can use data-binding to set
+    form.setFieldsValue({
+      keys: keys.filter((key: number) => key !== k),
+    });
+  };
+  const add = () => {
+    const { form } = props;
+    // can use data-binding to get
+    const keys = form.getFieldValue('keys');
+    const nextKeys = keys.concat(id++);
+    // can use data-binding to set
+    // important! notify form to detect changes
+    form.setFieldsValue({
+      keys: nextKeys,
+    });
+  };
   const formItemLayout = {
     labelCol: {
       xs: { span: 24 },
-      sm: { span: 8 },
+      sm: { span: 6 },
     },
     wrapperCol: {
       xs: { span: 24 },
-      sm: { span: 16 },
+      sm: { span: 18 },
     },
   };
+  const formItemLayoutWithOutLabel = {
+    wrapperCol: {
+      xs: { span: 24, offset: 0 },
+      sm: { span: 20, offset: 4 },
+    },
+  };
+  getFieldDecorator('keys', { initialValue: [] });
+  const keys = getFieldValue('keys');
+  const formItems = keys.map((k: any, index: number) => (
+    <Form.Item
+      label={['First action', 'Second action', 'Third action'][index]}
+      required={false}
+      key={k}
+    >
+      {getFieldDecorator(`names[${k}]`)(<Input placeholder="Enter action title" style={{ width: '90%', marginRight: 8 }} />)}
+      <Icon
+        className="dynamic-delete-button"
+        type="minus-circle-o"
+        onClick={() => remove(k)}
+      />
+    </Form.Item>
+  ));
+
+  console.log(['render'], hasErrors(getFieldsError()))
 
   return (
     <Form {...formItemLayout} onSubmit={handleSubmit}>
@@ -141,12 +193,12 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
         </Form.Item>
         <Form.Item label="Direction" validateStatus={dirError ? 'error' : ''} help={dirError || ''}>
           <Tooltip title="prompt text">
-            {getFieldDecorator('dir')(
-              <Select defaultValue="auto" style={{ width: 120 }}>
-                <Option value="auto">auto</Option>
-                <Option value="ltr">ltr</Option>
-                <Option value="rtl">rtl</Option>
-              </Select>
+            {getFieldDecorator('dir', { initialValue: 'auto' })(
+              <Radio.Group>
+                <Radio value="auto">Auto</Radio>
+                <Radio value="ltr">Left to right</Radio>
+                <Radio value="rtl">Right to left</Radio>
+              </Radio.Group>,
             )}
           </Tooltip>
         </Form.Item>
@@ -160,70 +212,14 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
             )}
           </Tooltip>
         </Form.Item>
-        <Form.Item label="First action title">
-          <Tooltip title="prompt text">
-            {getFieldDecorator('firstActionTitle')(
-              <Input
-                prefix={<Icon type="trademark" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder="Enter first action title"
-              />,
-            )}
-          </Tooltip>
-        </Form.Item>
-        <Form.Item label="First action id">
-          <Tooltip title="prompt text">
-            {getFieldDecorator('firstActionId')(
-              <Input
-                prefix={<Icon type="trademark" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder="Enter first action id"
-              />,
-            )}
-          </Tooltip>
-        </Form.Item>
-        <Form.Item label="First action icon" validateStatus={firstActionIconError ? 'error' : ''} help={firstActionIconError || ''}>
-          <Tooltip title="prompt text">
-            {getFieldDecorator('firstActionIcon', {
-              rules: [{ pattern: new RegExp('(http|ftp|https)://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?'), message: 'Please input valid url.' }],
-            })(
-              <Input
-                prefix={<Icon type="trademark" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder="Enter first action icon"
-              />,
-            )}
-          </Tooltip>
-        </Form.Item>
-        <Form.Item label="Second action id">
-          <Tooltip title="prompt text">
-            {getFieldDecorator('secondActionId')(
-              <Input
-                prefix={<Icon type="trademark" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder="Enter second action id"
-              />,
-            )}
-          </Tooltip>
-        </Form.Item>
-        <Form.Item label="Second action icon" validateStatus={secondActionIconError ? 'error' : ''} help={secondActionIconError || ''}>
-          <Tooltip title="prompt text">
-            {getFieldDecorator('secondActionIcon', {
-              rules: [{ pattern: new RegExp('(http|ftp|https)://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?'), message: 'Please input valid url.' }],
-            })(
-              <Input
-                prefix={<Icon type="trademark" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder="Enter second action icon url"
-              />,
-            )}
-          </Tooltip>
-        </Form.Item>
-        <Form.Item label="Second action title">
-          <Tooltip title="prompt text">
-            {getFieldDecorator('secondActionTitle')(
-              <Input
-                prefix={<Icon type="trademark" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder="Enter second action title"
-              />,
-            )}
-          </Tooltip>
-        </Form.Item>
+        {formItems}
+        {keys.length < 3 && (
+          <Form.Item {...formItemLayoutWithOutLabel}>
+            <Button type="dashed" onClick={add} style={{ width: '90%' }}>
+              <Icon type="plus" /> Add action
+            </Button>
+          </Form.Item>
+        )}
       </Card>
     </Form>
   );

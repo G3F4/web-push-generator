@@ -70,10 +70,9 @@ const App: React.FC = () => {
           userSubscription={userSubscription}
           // @ts-ignore
           onSend={async (notificationForm: any) => {
-            const { title, firstActionId, firstActionTitle, firstActionIcon, secondActionId, secondActionTitle, secondActionIcon, ...notification } = notificationForm;
-            const actions = Object.assign([], firstActionTitle && firstActionId && [{ action: firstActionId, title: firstActionTitle, icon: firstActionIcon }], secondActionId && secondActionTitle && [{ action: secondActionId, title: secondActionTitle, icon: secondActionIcon }]);
+            const { title, ...notification } = notificationForm;
 
-            await handleTestSubscription(userSubscription.subscription, title, { actions, ...notification })
+            await handleTestSubscription(userSubscription.subscription, title, notification)
           }}
         />
 
