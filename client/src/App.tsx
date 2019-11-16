@@ -1,6 +1,5 @@
-import { Button, Typography, Row, Col } from 'antd';
+import { Button, Col, Row, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
-import ReactJson from 'react-json-view'
 import NotificationForm from './modules/notificationForm/NotificationForm';
 import registerUserSubscription from './service-worker/registerUserSubscription';
 import testAllSubscriptions from './testAllSubscriptions';
@@ -63,32 +62,24 @@ const App: React.FC = () => {
         <Button onClick={handleActivateNotifications}>activate notifications</Button>
         <Button onClick={handleTestNotifications}>test all subscriptions</Button>
       </div>
-      <div>
+      <Row>
       {userSubscriptions.map(userSubscription => (
-        <Row key={userSubscription.subscription.endpoint}>
-          <Col span={6}>
-            Browser: {userSubscription.info.browser}
-          </Col>
-          <Col span={6}>
-            Os: {userSubscription.info.os}
-          </Col>
-          <Col span={12}>
-            <ReactJson src={userSubscription} collapsed />
-          </Col>
-          <Col span={24}>
-            <NotificationForm
-              // @ts-ignore
-              onSend={async (notificationForm: any) => {
-                const { title, firstActionId, firstActionTitle, firstActionIcon, secondActionId, secondActionTitle, secondActionIcon, ...notification } = notificationForm;
-                const actions = Object.assign([], firstActionTitle && firstActionId && [{ action: firstActionId, title: firstActionTitle, icon: firstActionIcon }], secondActionId && secondActionTitle && [{ action: secondActionId, title: secondActionTitle, icon: secondActionIcon }]);
+        <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+        <NotificationForm
+          // @ts-ignore
+          userSubscription={userSubscription}
+          // @ts-ignore
+          onSend={async (notificationForm: any) => {
+            const { title, firstActionId, firstActionTitle, firstActionIcon, secondActionId, secondActionTitle, secondActionIcon, ...notification } = notificationForm;
+            const actions = Object.assign([], firstActionTitle && firstActionId && [{ action: firstActionId, title: firstActionTitle, icon: firstActionIcon }], secondActionId && secondActionTitle && [{ action: secondActionId, title: secondActionTitle, icon: secondActionIcon }]);
 
-                await handleTestSubscription(userSubscription.subscription, title, { actions, ...notification })
-              }}
-            />
+            await handleTestSubscription(userSubscription.subscription, title, { actions, ...notification })
+          }}
+        />
+
           </Col>
-        </Row>
       ))}
-      </div>
+      </Row>
     </div>
   );
 };
