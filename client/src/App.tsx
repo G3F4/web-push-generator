@@ -63,7 +63,7 @@ const App: React.FC = () => {
         <Button onClick={handleActivateNotifications}>activate notifications</Button>
         <Button onClick={handleTestNotifications}>test all subscriptions</Button>
       </div>
-      <ul>
+      <div>
       {userSubscriptions.map(userSubscription => (
         <Row key={userSubscription.subscription.endpoint}>
           <Col span={6}>
@@ -88,7 +88,7 @@ const App: React.FC = () => {
           </Col>
         </Row>
       ))}
-      </ul>
+      </div>
     </div>
   );
 };
