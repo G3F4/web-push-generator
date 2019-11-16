@@ -80,9 +80,10 @@ const App: React.FC = () => {
             <NotificationForm
               // @ts-ignore
               onSend={async (notificationForm: any) => {
-                const { title, ...notification } = notificationForm;
+                const { title, firstActionId, firstActionTitle, firstActionIcon, ...notification } = notificationForm;
+                const actions = [{ action: firstActionId, title: firstActionTitle, icon: firstActionIcon }];
 
-                await handleTestSubscription(userSubscription.subscription, title,  notification)
+                await handleTestSubscription(userSubscription.subscription, title, { actions, ...notification })
               }}
             />
           </Col>
