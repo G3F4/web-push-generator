@@ -63,7 +63,6 @@ const App: React.FC = () => {
         <Button onClick={handleActivateNotifications}>activate notifications</Button>
         <Button onClick={handleTestNotifications}>test all subscriptions</Button>
       </div>
-
       <ul>
       {userSubscriptions.map(userSubscription => (
         <Row key={userSubscription.subscription.endpoint}>
@@ -80,8 +79,8 @@ const App: React.FC = () => {
             <NotificationForm
               // @ts-ignore
               onSend={async (notificationForm: any) => {
-                const { title, firstActionId, firstActionTitle, firstActionIcon, ...notification } = notificationForm;
-                const actions = [{ action: firstActionId, title: firstActionTitle, icon: firstActionIcon }];
+                const { title, firstActionId, firstActionTitle, firstActionIcon, secondActionId, secondActionTitle, secondActionIcon, ...notification } = notificationForm;
+                const actions = Object.assign([], firstActionTitle && firstActionId && [{ action: firstActionId, title: firstActionTitle, icon: firstActionIcon }], secondActionId && secondActionTitle && [{ action: secondActionId, title: secondActionTitle, icon: secondActionIcon }]);
 
                 await handleTestSubscription(userSubscription.subscription, title, { actions, ...notification })
               }}

@@ -64,8 +64,6 @@ export default function(server: Server) {
   server.post('/subscriptions/test-single', async request => {
     const { subscription, title, notification } = request.body;
 
-    console.log(['notification'], notification)
-
     try {
       await sendNotification(subscription, JSON.stringify({ title, notification }));
 
