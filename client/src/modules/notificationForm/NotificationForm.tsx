@@ -57,70 +57,70 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
     <Form layout="inline" onSubmit={handleSubmit}>
       <Collapse defaultActiveKey="1">
         <Panel header="Basic" key="1">
-          <Form.Item validateStatus={titleError ? 'error' : ''} help={titleError || ''}>
+          <Form.Item validateStatus={titleError ? 'error' : ''} help={titleError || ''} label="Title">
             <Tooltip title="prompt text">
               {getFieldDecorator('title', {
                 rules: [{ required: true, message: 'Please input notification title.' }],
               })(
                 <TextArea
-                  placeholder="Title"
+                  placeholder="Enter title"
                 />,
               )}
             </Tooltip>
           </Form.Item>
-          <Form.Item validateStatus={bodyError ? 'error' : ''} help={bodyError || ''}>
+          <Form.Item validateStatus={bodyError ? 'error' : ''} help={bodyError || ''} label="Body">
             <Tooltip title="prompt text">
               {getFieldDecorator('body', {
                 rules: [{ required: true, message: 'Please input notification body.' }],
               })(
                 <TextArea
-                  placeholder="Body"
+                  placeholder="Enter body"
                 />,
               )}
             </Tooltip>
           </Form.Item>
         </Panel>
         <Panel header="More" key="2">
-          <Form.Item validateStatus={iconError ? 'error' : ''} help={iconError || ''}>
+          <Form.Item label="Icon" validateStatus={iconError ? 'error' : ''} help={iconError || ''}>
             <Tooltip title="prompt text">
               {getFieldDecorator('icon', {
                 rules: [{ pattern: new RegExp('(http|ftp|https)://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?'), message: 'Please input valid url.' }],
               })(
                 <Input
                   prefix={<Icon type="question" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  placeholder="Icon"
+                  placeholder="Enter icon url"
                 />,
               )}
             </Tooltip>
           </Form.Item>
-          <Form.Item validateStatus={badgeError ? 'error' : ''} help={badgeError || ''}>
+          <Form.Item label="Badge" validateStatus={badgeError ? 'error' : ''} help={badgeError || ''}>
             <Tooltip title="prompt text">
               {getFieldDecorator('badge', {
                 rules: [{ pattern: new RegExp('(http|ftp|https)://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?'), message: 'Please input valid url.' }],
               })(
                 <Input
                   prefix={<Icon type="trademark" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  placeholder="Badge"
+                  placeholder="Enter badge url"
                 />,
               )}
             </Tooltip>
           </Form.Item>
-          <Form.Item validateStatus={imageError ? 'error' : ''} help={imageError || ''}>
+          <Form.Item label="Image" validateStatus={imageError ? 'error' : ''} help={imageError || ''}>
             <Tooltip title="prompt text">
               {getFieldDecorator('image', {
                 rules: [{ pattern: new RegExp('(http|ftp|https)://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?'), message: 'Please input valid url.' }],
               })(
                 <Input
                   prefix={<Icon type="trademark" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  placeholder="Image"
+                  placeholder="Enter image ulr"
                 />,
               )}
             </Tooltip>
           </Form.Item>
-          <Form.Item validateStatus={dirError ? 'error' : ''} help={dirError || ''}>
+          <Form.Item label="Direction" validateStatus={dirError ? 'error' : ''} help={dirError || ''}>
             <Tooltip title="prompt text">
               {getFieldDecorator('dir')(
-                <Select defaultValue="auto">
+                <Select defaultValue="auto" style={{ width: 120 }}>
                   <Option value="auto">auto</Option>
                   <Option value="ltr">ltr</Option>
                   <Option value="rtl">rtl</Option>
@@ -128,78 +128,78 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
               )}
             </Tooltip>
           </Form.Item>
-          <Form.Item>
+          <Form.Item label="Additional data">
             <Tooltip title="prompt text">
               {getFieldDecorator('data')(
                 <Input
                   prefix={<Icon type="trademark" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  placeholder="Additional data"
+                  placeholder="Enter additional data"
                 />,
               )}
             </Tooltip>
           </Form.Item>
         </Panel>
         <Panel header="Actions" key="3">
-          <Form.Item>
-            <Tooltip title="prompt text">
-              {getFieldDecorator('firstActionId')(
-                <Input
-                  prefix={<Icon type="trademark" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  placeholder="First action id"
-                />,
-              )}
-            </Tooltip>
-          </Form.Item>
-          <Form.Item>
+          <Form.Item label="First action title">
             <Tooltip title="prompt text">
               {getFieldDecorator('firstActionTitle')(
                 <Input
                   prefix={<Icon type="trademark" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  placeholder="First action title"
+                  placeholder="Enter first action title"
                 />,
               )}
             </Tooltip>
           </Form.Item>
-          <Form.Item validateStatus={firstActionIconError ? 'error' : ''} help={firstActionIconError || ''}>
+          <Form.Item label="First action id">
+            <Tooltip title="prompt text">
+              {getFieldDecorator('firstActionId')(
+                <Input
+                  prefix={<Icon type="trademark" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  placeholder="Enter first action id"
+                />,
+              )}
+            </Tooltip>
+          </Form.Item>
+          <Form.Item label="First action icon" validateStatus={firstActionIconError ? 'error' : ''} help={firstActionIconError || ''}>
             <Tooltip title="prompt text">
               {getFieldDecorator('firstActionIcon', {
                 rules: [{ pattern: new RegExp('(http|ftp|https)://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?'), message: 'Please input valid url.' }],
               })(
                 <Input
                   prefix={<Icon type="trademark" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  placeholder="First action icon"
+                  placeholder="Enter first action icon"
                 />,
               )}
             </Tooltip>
           </Form.Item>
-          <Form.Item>
+          <Form.Item label="Second action id">
             <Tooltip title="prompt text">
               {getFieldDecorator('secondActionId')(
                 <Input
                   prefix={<Icon type="trademark" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  placeholder="Second action id"
+                  placeholder="Enter second action id"
                 />,
               )}
             </Tooltip>
           </Form.Item>
-          <Form.Item>
-            <Tooltip title="prompt text">
-              {getFieldDecorator('secondActionTitle')(
-                <Input
-                  prefix={<Icon type="trademark" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  placeholder="Second action title"
-                />,
-              )}
-            </Tooltip>
-          </Form.Item>
-          <Form.Item validateStatus={secondActionIconError ? 'error' : ''} help={secondActionIconError || ''}>
+          <Form.Item label="Second action icon" validateStatus={secondActionIconError ? 'error' : ''} help={secondActionIconError || ''}>
             <Tooltip title="prompt text">
               {getFieldDecorator('secondActionIcon', {
                 rules: [{ pattern: new RegExp('(http|ftp|https)://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?'), message: 'Please input valid url.' }],
               })(
                 <Input
                   prefix={<Icon type="trademark" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  placeholder="Second action icon"
+                  placeholder="Enter second action icon url"
+                />,
+              )}
+            </Tooltip>
+          </Form.Item>
+          <Form.Item label="Second action title">
+            <Tooltip title="prompt text">
+              {getFieldDecorator('secondActionTitle')(
+                <Input
+                  prefix={<Icon type="trademark" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  placeholder="Enter second action title"
                 />,
               )}
             </Tooltip>
