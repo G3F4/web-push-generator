@@ -32,7 +32,7 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
   useEffect(() => {
     // To disabled submit button at the beginning.
     props.form.validateFields();
-  }, []);
+  }, [props.form]);
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
