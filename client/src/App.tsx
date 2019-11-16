@@ -1,15 +1,16 @@
-import { Button, Typography } from 'antd';
+import { Button, Typography, Row, Col } from 'antd';
 import React, { useEffect, useState } from 'react';
 import ReactJson from 'react-json-view'
+import NotificationForm from './modules/notificationForm/NotificationForm';
 import registerUserSubscription from './service-worker/registerUserSubscription';
 import testAllSubscriptions from './testAllSubscriptions';
 import testSingleSubscription from './testSingleSubscription';
 
 const { Title } = Typography;
 
-const handleTestSubscription = async (subscription: Subscription) => {
+const handleTestSubscription = async (subscription: Subscription, title: string, notification: any) => {
   try {
-    await testSingleSubscription(subscription);
+    await testSingleSubscription(subscription, title, notification);
   } catch (e) {
     console.error(['handleTestSubscription.error'], e);
   }
@@ -30,7 +31,7 @@ const handleTestNotifications = async () => {
     console.error(['handleTestNotifications.error'], e);
   }
 };
-const fetchSubscriptions = async () => {
+const fetchUserSubscriptions = async () => {
   const response = await fetch('/subscriptions');
 
   return await response.json();
@@ -40,11 +41,19 @@ export interface Subscription {
   endpoint: string;
 }
 
+export interface UserSubscription {
+  subscription: Subscription;
+  info: {
+    os?: string;
+    browser?: string;
+  };
+}
+
 const App: React.FC = () => {
-  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+  const [userSubscriptions, setUserSubscriptions] = useState<UserSubscription[]>([]);
 
   useEffect(() => {
-    fetchSubscriptions().then(({ subscriptions }) => setSubscriptions(subscriptions));
+    fetchUserSubscriptions().then(({ subscriptions }) => setUserSubscriptions(subscriptions));
   }, []);
 
   return (
@@ -52,16 +61,32 @@ const App: React.FC = () => {
       <Title>Web Push Generator</Title>
       <div>
         <Button onClick={handleActivateNotifications}>activate notifications</Button>
-      </div>
-      <div>
         <Button onClick={handleTestNotifications}>test all subscriptions</Button>
       </div>
+
       <ul>
-      {subscriptions.map(subscription => (
-        <li key={subscription.endpoint}>
-          <ReactJson src={subscription} collapsed />
-          <Button onClick={() => handleTestSubscription(subscription)}>test subscription</Button>
-        </li>
+      {userSubscriptions.map(userSubscription => (
+        <Row key={userSubscription.subscription.endpoint}>
+          <Col span={6}>
+            Browser: {userSubscription.info.browser}
+          </Col>
+          <Col span={6}>
+            Os: {userSubscription.info.os}
+          </Col>
+          <Col span={12}>
+            <ReactJson src={userSubscription} collapsed />
+          </Col>
+          <Col span={24}>
+            <NotificationForm
+              // @ts-ignore
+              onSend={async (notificationForm: any) => {
+                const { title, ...notification } = notificationForm;
+
+                await handleTestSubscription(userSubscription.subscription, title,  notification)
+              }}
+            />
+          </Col>
+        </Row>
       ))}
       </ul>
     </div>

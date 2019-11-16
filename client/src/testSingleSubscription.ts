@@ -1,6 +1,6 @@
 import { Subscription } from './App';
 
-export default async function testUserSubscriptions(subscription: Subscription) {
+export default async function testUserSubscriptions(subscription: Subscription, title: string, notification: any) {
   try {
     await fetch(`/subscriptions/test-single`, {
       credentials: 'same-origin',
@@ -9,7 +9,7 @@ export default async function testUserSubscriptions(subscription: Subscription) 
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(subscription),
+      body: JSON.stringify({ subscription, title, notification }),
     });
   } catch (e) {
     throw new Error(`error testing single subscription | ${e}`);

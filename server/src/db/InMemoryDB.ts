@@ -1,18 +1,26 @@
 import { PushSubscription } from 'web-push';
 
-export default class InMemoryDB {
-  subscriptions: PushSubscription[] = [];
+export interface UserSubscription {
+  subscription: PushSubscription;
+  info: {
+    browser?: string;
+    os?: string;
+  },
+}
 
-  getSubscriptions() {
-    return this.subscriptions;
+export default class InMemoryDB {
+  userSubscriptions: UserSubscription[] = [];
+
+  getUserSubscriptions() {
+    return this.userSubscriptions;
   }
 
-  saveSubscription(pushSubscription: PushSubscription) {
-    const existingSubscription = this.subscriptions
-      .find(subscription => subscription.endpoint === pushSubscription.endpoint);
+  saveUserSubscription(userSubscription: UserSubscription) {
+    const existingSubscription = this.userSubscriptions
+      .find(subscription => subscription.subscription.endpoint === userSubscription.subscription.endpoint);
 
     if (!existingSubscription) {
-      this.subscriptions.push(pushSubscription);
+      this.userSubscriptions.push(userSubscription);
     }
   }
 }
