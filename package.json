@@ -11,6 +11,7 @@
     "test": "CI=true cd server && yarn test && cd - && cd client && yarn test && cd -"
   },
   "dependencies": {
+    "@types/ua-parser-js": "0.7.33",
     "dotenv": "8.2.0",
     "fastify": "2.10.0",
     "fastify-static": "2.5.0",
