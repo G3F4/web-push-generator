@@ -1,6 +1,7 @@
-import { Button, Card, Form, Icon, Input, Radio, Tooltip } from 'antd';
+import { Button, Card, Form, Icon, Input, Modal, Radio, Tooltip } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import React, { FC, useEffect } from 'react';
+import deleteSingleSubscription from '../../deleteSingleSubscription';
 
 function hasErrors(fieldsError: any) {
   return Object.keys(fieldsError).some(field => {
@@ -33,6 +34,8 @@ interface FormValues {
   keys: any[];
   names: any[];
 }
+
+const { confirm } = Modal;
 
 const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProps> = (props) => {
   const { getFieldDecorator, getFieldsError, getFieldError, getFieldValue, isFieldTouched } = props.form;
@@ -116,7 +119,26 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
     </Form.Item>
   ));
 
-  console.log(['render'], hasErrors(getFieldsError()))
+  const deleteSubscription = async () => {
+    await deleteSingleSubscription(props.userSubscription.subscription.endpoint);
+  };
+
+  function showDeleteConfirm() {
+    confirm({
+      title: 'Are you sure delete this task?',
+      content: 'Some descriptions',
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      async onOk() {
+        console.log('OK');
+        await deleteSubscription();
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  }
 
   return (
     <Form {...formItemLayout} onSubmit={handleSubmit}>
@@ -124,13 +146,18 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
         key={props.userSubscription.subscription.endpoint}
         title={`Browser: ${props.userSubscription.info.browser} | Os: ${props.userSubscription.info.os}`}
         extra={
-            <Button
-              type="primary"
-              htmlType="submit"
-              disabled={hasErrors(getFieldsError())}
-            >
-              Send
-            </Button>
+            <div>
+              <Button onClick={showDeleteConfirm} type="dashed">
+                Delete
+              </Button>
+              <Button
+                type="primary"
+                htmlType="submit"
+                disabled={hasErrors(getFieldsError())}
+              >
+                Send
+              </Button>
+            </div>
         }
       >
         <Form.Item validateStatus={titleError ? 'error' : ''} help={titleError || ''} label="Title">

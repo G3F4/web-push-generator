@@ -1,4 +1,5 @@
-import { Button, Col, Row, Typography } from 'antd';
+import { Alert, Button, Col, Row, Typography } from 'antd';
+import { BaseType } from 'antd/lib/typography/Base';
 import React, { useEffect, useState } from 'react';
 import NotificationForm from './modules/notificationForm/NotificationForm';
 import registerUserSubscription from './service-worker/registerUserSubscription';
@@ -35,6 +36,12 @@ const fetchUserSubscriptions = async () => {
 
   return await response.json();
 };
+const fetchPermissionState = async () => {
+  const { pushManager } = await navigator.serviceWorker.ready;
+
+  // "denied" | "granted" | "prompt"
+  return await pushManager.permissionState();
+};
 
 export interface Subscription {
   endpoint: string;
@@ -49,7 +56,12 @@ export interface UserSubscription {
 }
 
 const App: React.FC = () => {
+  const [permissionState, setPermissionState] = useState<PushPermissionState>();
   const [userSubscriptions, setUserSubscriptions] = useState<UserSubscription[]>([]);
+
+  useEffect(() => {
+    fetchPermissionState().then(permissionState => setPermissionState(permissionState));
+  }, []);
 
   useEffect(() => {
     fetchUserSubscriptions().then(({ subscriptions }) => setUserSubscriptions(subscriptions));
@@ -58,9 +70,22 @@ const App: React.FC = () => {
   return (
     <div>
       <Title>Web Push Generator</Title>
-      <div>
+      <div style={{ display: 'flex' }}>
         <Button onClick={handleActivateNotifications}>activate notifications</Button>
         <Button onClick={handleTestNotifications}>test all subscriptions</Button>
+        {permissionState ? (
+          <Title
+            type={{
+              denied: 'danger',
+              granted: 'secondary',
+              prompt: 'warning',
+            }[permissionState] as BaseType}
+            style={{ marginLeft: 8 }}
+            level={4}
+          >{`Permission state: ${permissionState}`}</Title>
+        ) : (
+          <Alert message="Error checking permission state" type="error" showIcon />
+        )}
       </div>
       <Row>
       {userSubscriptions.map(userSubscription => (
@@ -75,7 +100,6 @@ const App: React.FC = () => {
             await handleTestSubscription(userSubscription.subscription, title, notification)
           }}
         />
-
           </Col>
       ))}
       </Row>

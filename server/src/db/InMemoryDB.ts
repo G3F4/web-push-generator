@@ -23,4 +23,9 @@ export default class InMemoryDB {
       this.userSubscriptions.push(userSubscription);
     }
   }
+
+  deleteUserSubscription(subscriptionEndpoint: string) {
+    this.userSubscriptions = this.userSubscriptions
+      .filter(subscription => subscription.subscription.endpoint !== subscriptionEndpoint);
+  }
 }

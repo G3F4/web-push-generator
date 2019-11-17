@@ -72,4 +72,18 @@ export default function(server: Server) {
       return { send: false };
     }
   });
+
+  server.delete('/subscriptions/delete-single', async request => {
+    const { subscriptionEndpoint } = request.body;
+
+    try {
+      db.deleteUserSubscription(subscriptionEndpoint);
+
+      const subscriptions = db.getUserSubscriptions();
+
+      return { subscriptions };
+    } catch (e) {
+      return { deleted: false };
+    }
+  });
 }
