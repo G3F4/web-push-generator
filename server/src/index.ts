@@ -23,7 +23,7 @@ subscriptionsEndpoint(server);
 
 const start = async () => {
   try {
-    const address = await server.listen(process.env.NODE_ENV || '5555');
+    const address = await server.listen(process.env.PORT || '5555');
 
     console.info(`server listening on ${address}`)
   } catch (err) {
