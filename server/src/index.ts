@@ -4,12 +4,12 @@ import { readFileSync } from 'fs';
 import path from 'path';
 import subscriptionsEndpoint from './endpoints/subscriptionsEndpoint';
 
-const server = fastify({
+const server = fastify(process.env.NODE_ENV !== 'production' ? {
   https: {
     key: readFileSync(path.join(__dirname, 'https', 'fastify.key')),
     cert: readFileSync(path.join(__dirname, 'https', 'fastify.crt'))
   }
-});
+} : {});
 
 //@ts-ignore
 server.register(fastifyStatic, {
