@@ -1,15 +1,18 @@
 import fastify from 'fastify';
 import fastifyStatic from 'fastify-static';
-import { readFileSync } from 'fs';
 import path from 'path';
 import subscriptionsEndpoint from './endpoints/subscriptionsEndpoint';
 
-const server = fastify(process.env.NODE_ENV !== 'production' ? {
-  https: {
-    key: readFileSync(path.join(__dirname, 'https', 'fastify.key')),
-    cert: readFileSync(path.join(__dirname, 'https', 'fastify.crt'))
-  }
-} : {});
+// localhost only
+//import { readFileSync } from 'fs';
+//const server = fastify({
+//  https: {
+//    key: readFileSync(path.join(__dirname, 'https', 'fastify.key')),
+//    cert: readFileSync(path.join(__dirname, 'https', 'fastify.crt'))
+//  }
+//});
+
+const server = fastify();
 
 //@ts-ignore
 server.register(fastifyStatic, {
@@ -20,7 +23,7 @@ subscriptionsEndpoint(server);
 
 const start = async () => {
   try {
-    const address = await server.listen(5555);
+    const address = await server.listen(process.env.NODE_ENV || '5555');
 
     console.info(`server listening on ${address}`)
   } catch (err) {
