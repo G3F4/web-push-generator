@@ -3,7 +3,7 @@
   "description": "Web Push notifications generator",
   "version": "0.1.0",
   "scripts": {
-    "start": "ts-node -r dotenv/config build",
+    "start": "node -r dotenv/config build",
     "secure": "rm -rf build/https && mkdir build/https && openssl genrsa -out build/https/fastify.key 2048 && openssl req -new -x509 -key build/https/fastify.key -out build/https/fastify.crt -days 3650 -subj /CN=localhost",
     "build": "rm -rf build && yarn run build:server && yarn run build:client",
     "build:client": "cd client && yarn run build && cd - && mv client/build build/public",
@@ -11,24 +11,24 @@
     "test": "CI=true cd server && yarn test && cd - && cd client && yarn test && cd -"
   },
   "dependencies": {
-    "@types/node": "12.12.6",
-    "@types/web-push": "3.3.0",
     "dotenv": "8.2.0",
     "fastify": "2.10.0",
     "fastify-static": "2.5.0",
-    "ts-node": "8.5.0",
-    "typescript": "3.7.2",
     "web-push": "3.4.1"
   },
   "devDependencies": {
+    "@types/node": "12.12.6",
     "@types/react": "16.9.11",
     "@types/react-dom": "16.9.4",
+    "@types/web-push": "3.3.0",
     "antd": "3.25.1",
     "customize-cra": "0.8.0",
     "react": "16.11.0",
     "react-app-rewired": "2.1.5",
     "react-dom": "16.11.0",
-    "react-scripts": "3.2.0"
+    "react-scripts": "3.2.0",
+    "ts-node": "8.5.0",
+    "typescript": "3.7.2"
   },
   "repository": {
     "type": "git",
