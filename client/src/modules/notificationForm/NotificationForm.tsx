@@ -19,6 +19,7 @@ export interface NotificationFormProps {
   userSubscription: any;
 
   onSend(notification: any): Promise<void>;
+  onDeleted(): void;
 }
 
 interface FormValues {
@@ -133,6 +134,8 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
       async onOk() {
         console.log('OK');
         await deleteSubscription();
+        props.onDeleted();
+
       },
       onCancel() {
         console.log('Cancel');
