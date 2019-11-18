@@ -1,4 +1,4 @@
-import { Button, Col, Row, Typography } from 'antd';
+import { Button, Col, Divider, Row, Typography } from 'antd';
 import { BaseType } from 'antd/lib/typography/Base';
 import React, { useCallback, useEffect, useState } from 'react';
 import NotificationForm from './modules/notificationForm/NotificationForm';
@@ -55,25 +55,32 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <Title>Web Push Generator</Title>
-      <div style={{ display: 'flex' }}>
-        <Button onClick={handleActivateNotifications}>activate notifications</Button>
-        <Button onClick={testAllSubscriptions}>test all subscriptions</Button>
-        {Notification.permission && (
-          <Title
-            type={{
-              denied: 'danger',
-              granted: 'secondary',
-              default: 'warning',
-            }[Notification.permission] as BaseType}
-            style={{ marginLeft: 8 }}
-            level={4}
-          >{`Permission state: ${Notification.permission}`}</Title>
-        )}
-      </div>
+      <Row type="flex" justify="center">
+        <Title style={{ margin: 8 }} >Web Push Generator</Title>
+      </Row>
+      <Row type="flex" justify="center">
+        <Title
+          type={{
+            denied: 'danger',
+            granted: 'secondary',
+            default: 'warning',
+          }[Notification.permission] as BaseType}
+          style={{ marginRight: 8 }}
+          level={4}
+        >{`Notifications permission state: ${Notification.permission}`}</Title>
+        <Button onClick={handleActivateNotifications} disabled={Notification.permission === 'denied'}>
+          {{
+            denied: 'Not active',
+            granted: 'Resend subscription',
+            default: 'Ask for permission',
+          }[Notification.permission] as BaseType}
+        </Button>
+        <Button onClick={testAllSubscriptions}>Test all subscriptions</Button>
+      </Row>
+      <Divider style={{ margin: 0 }}/>
       <Row>
       {userSubscriptions.map(userSubscription => (
-        <Col xs={24} sm={24} md={12} lg={12} xl={8} key={userSubscription.subscription.endpoint}>
+        <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={6} key={userSubscription.subscription.endpoint}>
         <NotificationForm
           // @ts-ignore
           userSubscription={userSubscription}

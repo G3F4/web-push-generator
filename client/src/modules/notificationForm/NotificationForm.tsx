@@ -1,4 +1,4 @@
-import { Button, Card, Form, Icon, Input, Modal, Radio, Tooltip } from 'antd';
+import { Button, Card, Checkbox, Form, Icon, Input, Modal, Tooltip } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import React, { FC, useEffect } from 'react';
 import deleteSingleSubscription from '../../deleteSingleSubscription';
@@ -28,10 +28,9 @@ interface FormValues {
   icon: string;
   badge: string;
   image: string;
-  dir: string;
-  firstActionId: string;
-  firstActionTitle: string;
-  firstActionIcon: string;
+  renotify: boolean;
+  requireInteraction: boolean;
+  silent: boolean;
   keys: any[];
   names: any[];
 }
@@ -62,7 +61,6 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
   const iconError = isFieldTouched('icon') && getFieldError('icon');
   const badgeError = isFieldTouched('badge') && getFieldError('badge');
   const imageError = isFieldTouched('image') && getFieldError('image');
-  const dirError = isFieldTouched('dir') && getFieldError('dir');
   const remove = (k: number) => {
     const { form } = props;
     // can use data-binding to get
@@ -87,12 +85,14 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
   };
   const formItemLayout = {
     labelCol: {
-      xs: { span: 24 },
+      xs: { span: 8 },
       sm: { span: 6 },
+      md: { span: 10 },
     },
     wrapperCol: {
-      xs: { span: 24 },
+      xs: { span: 16 },
       sm: { span: 18 },
+      md: { span: 14 },
     },
   };
   const formItemLayoutWithOutLabel = {
@@ -125,8 +125,8 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
 
   function showDeleteConfirm() {
     confirm({
-      title: 'Are you sure delete this task?',
-      content: 'Some descriptions',
+      title: 'Are you sure delete this subscription?',
+      content: 'You can add subscription again later.',
       okText: 'Yes',
       okType: 'danger',
       cancelText: 'No',
@@ -163,7 +163,7 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
         }
       >
         <Form.Item validateStatus={titleError ? 'error' : ''} help={titleError || ''} label="Title">
-          <Tooltip title="prompt text">
+          <Tooltip title="Title of notification will appear at the top of Your notification.">
             {getFieldDecorator('title', {
               rules: [{ required: true, message: 'Please input notification title.' }],
             })(
@@ -174,7 +174,7 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
           </Tooltip>
         </Form.Item>
         <Form.Item validateStatus={bodyError ? 'error' : ''} help={bodyError || ''} label="Body">
-          <Tooltip title="prompt text">
+          <Tooltip title="Notification body text. It can be long, multiline text.">
             {getFieldDecorator('body', {
               rules: [{ required: true, message: 'Please input notification body.' }],
             })(
@@ -185,7 +185,7 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
           </Tooltip>
         </Form.Item>
         <Form.Item label="Icon" validateStatus={iconError ? 'error' : ''} help={iconError || ''}>
-          <Tooltip title="prompt text">
+          <Tooltip title="Icon displayed in notification.">
             {getFieldDecorator('icon', {
               rules: [{ pattern: new RegExp('(http|ftp|https)://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?'), message: 'Please input valid url.' }],
             })(
@@ -197,7 +197,7 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
           </Tooltip>
         </Form.Item>
         <Form.Item label="Badge" validateStatus={badgeError ? 'error' : ''} help={badgeError || ''}>
-          <Tooltip title="prompt text">
+          <Tooltip title="Badge is icon displayed in mobile devices toolbar.">
             {getFieldDecorator('badge', {
               rules: [{ pattern: new RegExp('(http|ftp|https)://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?'), message: 'Please input valid url.' }],
             })(
@@ -209,7 +209,7 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
           </Tooltip>
         </Form.Item>
         <Form.Item label="Image" validateStatus={imageError ? 'error' : ''} help={imageError || ''}>
-          <Tooltip title="prompt text">
+          <Tooltip title="Image displayed after notification body.">
             {getFieldDecorator('image', {
               rules: [{ pattern: new RegExp('(http|ftp|https)://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?'), message: 'Please input valid url.' }],
             })(
@@ -220,14 +220,13 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
             )}
           </Tooltip>
         </Form.Item>
-        <Form.Item label="Direction" validateStatus={dirError ? 'error' : ''} help={dirError || ''}>
-          <Tooltip title="prompt text">
-            {getFieldDecorator('dir', { initialValue: 'auto' })(
-              <Radio.Group>
-                <Radio value="auto">Auto</Radio>
-                <Radio value="ltr">Left to right</Radio>
-                <Radio value="rtl">Right to left</Radio>
-              </Radio.Group>,
+        <Form.Item label="Vibrate">
+          <Tooltip title="Vibration pattern for the device's vibration hardware to emit when the notification fires.">
+            {getFieldDecorator('vibrate')(
+              <Input
+                prefix={<Icon type="trademark" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                placeholder="Enter vibration pattern"
+              />,
             )}
           </Tooltip>
         </Form.Item>
@@ -238,6 +237,20 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
                 prefix={<Icon type="trademark" style={{ color: 'rgba(0,0,0,.25)' }} />}
                 placeholder="Enter additional data"
               />,
+            )}
+          </Tooltip>
+        </Form.Item>
+        <Form.Item label="Renotify">
+          <Tooltip title="Specifies whether the user should be notified after a new notification replaces an old one.">
+            {getFieldDecorator('renotify')(
+              <Checkbox />,
+            )}
+          </Tooltip>
+        </Form.Item>
+        <Form.Item label="Require interaction">
+          <Tooltip title="Active until the user clicks or dismisses it.">
+            {getFieldDecorator('requireInteraction')(
+              <Checkbox />,
             )}
           </Tooltip>
         </Form.Item>
