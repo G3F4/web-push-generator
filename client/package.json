@@ -9,7 +9,7 @@
     "lint": "eslint './src/**/*.{ts,tsx}'",
     "lint:fix": "eslint './src/**/*.{ts,tsx}' --fix"
   },
-  "proxy": "https://localhost:5555",
+  "proxy": "https://0.0.0.0:5555/",
   "dependencies": {
     "@types/jest": "24.0.22",
     "@types/node": "12.12.6",

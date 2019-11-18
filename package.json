@@ -4,6 +4,8 @@
   "version": "0.1.0",
   "scripts": {
     "start": "node build",
+    "dev:client": "cd client && yarn start",
+    "dev:server": "cd server && yarn dev",
     "secure": "rm -rf build/https && mkdir build/https && openssl genrsa -out build/https/fastify.key 2048 && openssl req -new -x509 -key build/https/fastify.key -out build/https/fastify.crt -days 3650 -subj /CN=localhost",
     "build": "rm -rf build && yarn run build:server && yarn run build:client",
     "build:client": "cd client && yarn run build && cd - && mv client/build build/public",
