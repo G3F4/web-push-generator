@@ -37,7 +37,6 @@ interface FormValues {
 }
 
 const { confirm } = Modal;
-
 const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProps> = (props) => {
   const { getFieldDecorator, getFieldsError, getFieldError, getFieldValue, isFieldTouched } = props.form;
 
@@ -57,7 +56,6 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
       }
     });
   };
-
   // Only show error after a field is touched.
   const titleError = isFieldTouched('title') && getFieldError('title');
   const bodyError = isFieldTouched('body') && getFieldError('body');
@@ -65,7 +63,6 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
   const badgeError = isFieldTouched('badge') && getFieldError('badge');
   const imageError = isFieldTouched('image') && getFieldError('image');
   const dirError = isFieldTouched('dir') && getFieldError('dir');
-
   const remove = (k: number) => {
     const { form } = props;
     // can use data-binding to get
@@ -81,6 +78,7 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
     // can use data-binding to get
     const keys = form.getFieldValue('keys');
     const nextKeys = keys.concat(id++);
+
     // can use data-binding to set
     // important! notify form to detect changes
     form.setFieldsValue({
@@ -103,7 +101,9 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
       sm: { span: 20, offset: 4 },
     },
   };
+
   getFieldDecorator('keys', { initialValue: [] });
+
   const keys = getFieldValue('keys');
   const formItems = keys.map((k: any, index: number) => (
     <Form.Item
@@ -119,7 +119,6 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
       />
     </Form.Item>
   ));
-
   const deleteSubscription = async () => {
     await deleteSingleSubscription(props.userSubscription.subscription.endpoint);
   };

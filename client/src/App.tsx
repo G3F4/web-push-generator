@@ -7,14 +7,6 @@ import testAllSubscriptions from './testAllSubscriptions';
 import testSingleSubscription from './testSingleSubscription';
 
 const { Title } = Typography;
-
-const handleTestSubscription = async (subscription: Subscription, title: string, notification: any) => {
-  try {
-    await testSingleSubscription(subscription, title, notification);
-  } catch (e) {
-    console.error(['handleTestSubscription.error'], e);
-  }
-};
 const registerSubscription = async () => {
   try {
     const registration = await navigator.serviceWorker.ready;
@@ -22,13 +14,6 @@ const registerSubscription = async () => {
     await registerUserSubscription(registration);
   } catch (e) {
     console.error(['registerSubscription.error'], e);
-  }
-};
-const handleTestNotifications = async () => {
-  try {
-    await testAllSubscriptions();
-  } catch (e) {
-    console.error(['handleTestNotifications.error'], e);
   }
 };
 const fetchUserSubscriptions = async () => {
@@ -73,7 +58,7 @@ const App: React.FC = () => {
       <Title>Web Push Generator</Title>
       <div style={{ display: 'flex' }}>
         <Button onClick={handleActivateNotifications}>activate notifications</Button>
-        <Button onClick={handleTestNotifications}>test all subscriptions</Button>
+        <Button onClick={testAllSubscriptions}>test all subscriptions</Button>
         {Notification.permission && (
           <Title
             type={{
@@ -98,7 +83,7 @@ const App: React.FC = () => {
           onSend={async (notificationForm: any) => {
             const { title, ...notification } = notificationForm;
 
-            await handleTestSubscription(userSubscription.subscription, title, notification)
+            await testSingleSubscription(userSubscription.subscription, title, notification)
           }}
         />
           </Col>
