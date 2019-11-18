@@ -4,17 +4,16 @@ import path from 'path';
 import subscriptionsEndpoint from './endpoints/subscriptionsEndpoint';
 
 // localhost only
-import { readFileSync } from 'fs';
-const server = fastify({
-  https: {
-    key: readFileSync(path.join(__dirname, 'https', 'fastify.key')),
-    cert: readFileSync(path.join(__dirname, 'https', 'fastify.crt'))
-  }
-});
+//import { readFileSync } from 'fs';
+//const server = fastify({
+//  https: {
+//    key: readFileSync(path.join(__dirname, 'https', 'fastify.key')),
+//    cert: readFileSync(path.join(__dirname, 'https', 'fastify.crt'))
+//  }
+//});
 
-//const server = fastify();
+const server = fastify();
 
-//@ts-ignore
 server.register(fastifyStatic, {
   root: path.join(__dirname, 'public'),
 });
