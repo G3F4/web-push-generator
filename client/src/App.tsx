@@ -99,6 +99,10 @@ const App: React.FC = () => {
                 // @ts-ignore
                 onDeleted={handleSubscriptionDeleted}
                 // @ts-ignore
+                onFormDataCopy={() => { console.log('TODO')}}
+                // @ts-ignore
+                onFormDataPaste={() => { console.log('TODO')}}
+                // @ts-ignore
                 onSend={async (notificationForm: any) => {
                   const { title, ...notification } = notificationForm;
 

@@ -1,4 +1,4 @@
-import { Button, Card, Checkbox, Form, Icon, Input, Modal, Tooltip } from 'antd';
+import { Button, Card, Checkbox, Dropdown, Form, Icon, Input, Menu, Modal, Tooltip } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import React, { FC, useEffect } from 'react';
 import deleteSingleSubscription from '../../deleteSingleSubscription';
@@ -18,6 +18,8 @@ let id = 0;
 export interface NotificationFormProps {
   userSubscription: any;
 
+  onFormDataCopy(notification: any): void;
+  onFormDataPaste(notification: any): void;
   onSend(notification: any): Promise<void>;
   onDeleted(): void;
 }
@@ -136,6 +138,21 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
     });
   }
 
+  const menu = (
+    <Menu>
+      <Menu.Item onClick={props.onFormDataCopy}>
+        Copy form data
+      </Menu.Item>
+      <Menu.Item onClick={props.onFormDataPaste}>
+        Paste form data
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item onClick={showDeleteConfirm}>
+        Delete
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
     <Form {...formItemLayout} onSubmit={handleSubmit}>
       <Card
@@ -143,16 +160,17 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
         title={`Browser: ${props.userSubscription.info.browser} | Os: ${props.userSubscription.info.os}`}
         extra={
             <div>
-              <Button onClick={showDeleteConfirm} type="dashed">
-                Delete
-              </Button>
               <Button
                 type="primary"
                 htmlType="submit"
                 disabled={hasErrors(getFieldsError())}
+                style={{ marginRight: 8 }}
               >
                 Send
               </Button>
+              <Dropdown overlay={menu} trigger={['click']}>
+                <Icon type="menu" />
+              </Dropdown>
             </div>
         }
         hoverable
