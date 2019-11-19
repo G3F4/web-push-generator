@@ -1,4 +1,4 @@
-import { Avatar, Button, Col, Divider, Layout, Row, Typography } from 'antd';
+import { Avatar, Button, Col, Layout, Row, Typography } from 'antd';
 import { BaseType } from 'antd/lib/typography/Base';
 import React, { useCallback, useEffect, useState } from 'react';
 import NotificationForm from './modules/notificationForm/NotificationForm';

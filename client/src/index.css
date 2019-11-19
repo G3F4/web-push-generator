@@ -19,7 +19,7 @@ code {
   }
 
   .ant-form.ant-form-horizontal .ant-form-item-label {
-    width: 33.33333333%;
+    width: 28%;
     display: inline-block;
     overflow: hidden;
     line-height: 39.9999px;
@@ -30,6 +30,6 @@ code {
   }
 
   .ant-form.ant-form-horizontal .ant-form-item-control-wrapper {
-    width: 66.66666667%;
+    width: 72%;
   }
 }

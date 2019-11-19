@@ -95,12 +95,6 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
       md: { span: 14 },
     },
   };
-  const formItemLayoutWithOutLabel = {
-    wrapperCol: {
-      xs: { span: 24, offset: 0 },
-      sm: { span: 20, offset: 4 },
-    },
-  };
 
   getFieldDecorator('keys', { initialValue: [] });
 
@@ -111,7 +105,7 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
       required={false}
       key={k}
     >
-      {getFieldDecorator(`names[${k}]`)(<Input placeholder="Enter action title" style={{ width: '90%', marginRight: 8 }} />)}
+      {getFieldDecorator(`names[${k}]`)(<Input placeholder="Enter action title" style={{ width: '80%', marginRight: 8 }} />)}
       <Icon
         className="dynamic-delete-button"
         type="minus-circle-o"
@@ -231,16 +225,6 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
             )}
           </Tooltip>
         </Form.Item>
-        <Form.Item label="Additional data">
-          <Tooltip title="prompt text">
-            {getFieldDecorator('data')(
-              <Input
-                prefix={<Icon type="trademark" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder="Enter additional data"
-              />,
-            )}
-          </Tooltip>
-        </Form.Item>
         <Form.Item label="Renotify">
           <Tooltip title="Specifies whether the user should be notified after a new notification replaces an old one.">
             {getFieldDecorator('renotify')(
@@ -248,7 +232,7 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
             )}
           </Tooltip>
         </Form.Item>
-        <Form.Item label="Require interaction">
+        <Form.Item label="Require action">
           <Tooltip title="Active until the user clicks or dismisses it.">
             {getFieldDecorator('requireInteraction')(
               <Checkbox />,
@@ -257,8 +241,8 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
         </Form.Item>
         {formItems}
         {keys.length < 3 && (
-          <Form.Item {...formItemLayoutWithOutLabel}>
-            <Button type="dashed" onClick={add} style={{ width: '90%' }}>
+          <Form.Item label={['First action', 'Second action', 'Third action'][keys.length]}>
+            <Button type="dashed" onClick={add} style={{ width: '80%' }}>
               <Icon type="plus" /> Add action
             </Button>
           </Form.Item>
