@@ -11,3 +11,24 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@media (max-width: 575px) {
+  .ant-form.ant-form-horizontal .ant-form-item {
+    margin-bottom: 0;
+  }
+
+  .ant-form.ant-form-horizontal .ant-form-item-label {
+    width: 33.33333333%;
+    display: inline-block;
+    overflow: hidden;
+    line-height: 39.9999px;
+    white-space: nowrap;
+    text-align: right;
+    vertical-align: middle;
+   padding-right: 8px;
+  }
+
+  .ant-form.ant-form-horizontal .ant-form-item-control-wrapper {
+    width: 66.66666667%;
+  }
+}

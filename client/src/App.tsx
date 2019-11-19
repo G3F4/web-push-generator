@@ -56,7 +56,7 @@ const App: React.FC = () => {
   return (
     <div>
       <Row type="flex" justify="center">
-        <Title style={{ margin: 8 }} >Web Push Generator</Title>
+        <Title style={{ margin: 8, textAlign: 'center' }} >Web Push Generator</Title>
       </Row>
       <Row type="flex" justify="center">
         <Title
@@ -65,7 +65,7 @@ const App: React.FC = () => {
             granted: 'secondary',
             default: 'warning',
           }[Notification.permission] as BaseType}
-          style={{ marginRight: 8 }}
+          style={{ marginRight: 8, textAlign: 'center' }}
           level={4}
         >{`Notifications permission state: ${Notification.permission}`}</Title>
         <Button onClick={handleActivateNotifications} disabled={Notification.permission === 'denied'}>
