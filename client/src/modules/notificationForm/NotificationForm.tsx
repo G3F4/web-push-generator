@@ -161,6 +161,7 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
               </Button>
             </div>
         }
+        hoverable
       >
         <Form.Item validateStatus={titleError ? 'error' : ''} help={titleError || ''} label="Title">
           <Tooltip title="Title of notification will appear at the top of Your notification.">
