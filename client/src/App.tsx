@@ -78,7 +78,7 @@ const App: React.FC = () => {
               granted: 'secondary',
               default: 'warning',
             }[Notification.permission] as BaseType}
-            style={{ marginBottom: 8, marginRight: 8, textAlign: 'center', fontSize: 18 }}
+            style={{ marginBottom: 8, whiteSpace: 'nowrap', marginRight: 8, textAlign: 'center', fontSize: 18 }}
             strong
           >{`Notifications permission state: ${Notification.permission}`}</Text>
           <Button onClick={handleActivateNotifications} disabled={Notification.permission === 'denied'}>
