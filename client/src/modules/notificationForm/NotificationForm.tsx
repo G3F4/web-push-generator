@@ -165,19 +165,33 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
       </Menu.Item>
     </Menu>
   );
+  const oses: Record<string, string> = {
+    'Mac OS': 'apple',
+    'Android': 'android',
+    'Windows': 'windows',
+  };
+  const type = oses[props.userSubscription.info.os];
 
   return (
     <Form {...formItemLayout} onSubmit={handleSubmit}>
       <Card
         key={props.userSubscription.subscription.endpoint}
-        title={`Browser: ${props.userSubscription.info.browser} | Os: ${props.userSubscription.info.os}`}
+        title={
+          <>
+
+            {type ? (
+            <Icon type={type} style={{ fontSize: 32 }} />
+          ) : props.userSubscription.info.os}
+            {` ${props.userSubscription.info.browser}`}
+          </>
+        }
         extra={
             <div>
               <Button
                 type="primary"
                 htmlType="submit"
                 disabled={hasErrors(getFieldsError())}
-                style={{ marginRight: 8 }}
+                style={{ marginRight: 16 }}
               >
                 Send
               </Button>
@@ -186,7 +200,6 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
               </Dropdown>
             </div>
         }
-        hoverable
       >
         <Form.Item validateStatus={titleError ? 'error' : ''} help={titleError || ''} label="Title">
           <Tooltip title="Title of notification will appear at the top of Your notification.">
