@@ -1,4 +1,4 @@
-import { Avatar, Button, Col, Layout, Row, Skeleton, Typography } from 'antd';
+import { Avatar, Button, Col, Layout, Row, Skeleton, Typography, message } from 'antd';
 import { BaseType } from 'antd/lib/typography/Base';
 import React, { useCallback, useEffect, useState } from 'react';
 import NotificationForm from './modules/notificationForm/NotificationForm';
@@ -36,6 +36,7 @@ export interface UserSubscription {
 }
 
 const App: React.FC = () => {
+  const [copiedNotification, setCopiedSubscription] = useState<UserSubscription>();
   const [userSubscriptions, setUserSubscriptions] = useState<UserSubscription[]>([]);
   const [loadingAdding, setLoadingAdding] = useState(false);
   const [loadingList, setLoadingList] = useState(true);
@@ -107,9 +108,13 @@ const App: React.FC = () => {
                   // @ts-ignore
                   onDeleted={handleSubscriptionDeleted}
                   // @ts-ignore
-                  onFormDataCopy={() => { console.log('TODO')}}
+                  onFormDataCopy={(notificationForm: any) => {
+                    console.log(['notificationForm'], notificationForm);
+                    message.info('Form copied!');
+                    setCopiedSubscription(notificationForm);
+                  }}
                   // @ts-ignore
-                  onFormDataPaste={() => { console.log('TODO')}}
+                  copiedNotification={copiedNotification}
                   // @ts-ignore
                   onSend={async (notificationForm: any) => {
                     const { title, ...notification } = notificationForm;

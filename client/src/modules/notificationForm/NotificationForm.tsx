@@ -16,12 +16,12 @@ function hasErrors(fieldsError: any) {
 let id = 0;
 
 export interface NotificationFormProps {
+  copiedNotification: any;
   userSubscription: any;
 
-  onFormDataCopy(notification: any): void;
-  onFormDataPaste(notification: any): void;
-  onSend(notification: any): Promise<void>;
   onDeleted(): void;
+  onFormDataCopy(notification: any): void;
+  onSend(notification: any): Promise<void>;
 }
 
 interface FormValues {
@@ -39,7 +39,15 @@ interface FormValues {
 
 const { confirm } = Modal;
 const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProps> = (props) => {
-  const { getFieldDecorator, getFieldsError, getFieldError, getFieldValue, isFieldTouched } = props.form;
+  const {
+    getFieldDecorator,
+    getFieldsError,
+    getFieldError,
+    getFieldValue,
+    getFieldsValue,
+    isFieldTouched,
+    setFields,
+  } = props.form;
 
   useEffect(() => {
     // To disabled submit button at the beginning.
@@ -140,10 +148,15 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
 
   const menu = (
     <Menu>
-      <Menu.Item onClick={props.onFormDataCopy}>
+      <Menu.Item onClick={() => {
+        props.onFormDataCopy(getFieldsValue());
+      }}>
         Copy form data
       </Menu.Item>
-      <Menu.Item onClick={props.onFormDataPaste}>
+      <Menu.Item onClick={() => {
+        setFields(Object.keys(props.copiedNotification)
+          .reduce((acc, key) => ({ ...acc, [key]: { value: props.copiedNotification[key]}}), {}));
+      }}>
         Paste form data
       </Menu.Item>
       <Menu.Divider />
@@ -178,6 +191,7 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
         <Form.Item validateStatus={titleError ? 'error' : ''} help={titleError || ''} label="Title">
           <Tooltip title="Title of notification will appear at the top of Your notification.">
             {getFieldDecorator('title', {
+              initialValue: '',
               rules: [{ required: true, message: 'Please input notification title.' }],
             })(
               <Input
@@ -189,6 +203,7 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
         <Form.Item validateStatus={bodyError ? 'error' : ''} help={bodyError || ''} label="Body">
           <Tooltip title="Notification body text. It can be long, multiline text.">
             {getFieldDecorator('body', {
+              initialValue: '',
               rules: [{ required: true, message: 'Please input notification body.' }],
             })(
               <Input
@@ -200,6 +215,7 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
         <Form.Item label="Icon" validateStatus={iconError ? 'error' : ''} help={iconError || ''}>
           <Tooltip title="Icon displayed in notification.">
             {getFieldDecorator('icon', {
+              initialValue: '',
               rules: [{ pattern: new RegExp('(http|ftp|https)://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?'), message: 'Please input valid url.' }],
             })(
               <Input
@@ -212,6 +228,7 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
         <Form.Item label="Badge" validateStatus={badgeError ? 'error' : ''} help={badgeError || ''}>
           <Tooltip title="Badge is icon displayed in mobile devices toolbar.">
             {getFieldDecorator('badge', {
+              initialValue: '',
               rules: [{ pattern: new RegExp('(http|ftp|https)://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?'), message: 'Please input valid url.' }],
             })(
               <Input
@@ -224,6 +241,7 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
         <Form.Item label="Image" validateStatus={imageError ? 'error' : ''} help={imageError || ''}>
           <Tooltip title="Image displayed after notification body.">
             {getFieldDecorator('image', {
+              initialValue: '',
               rules: [{ pattern: new RegExp('(http|ftp|https)://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?'), message: 'Please input valid url.' }],
             })(
               <Input
@@ -235,7 +253,7 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
         </Form.Item>
         <Form.Item label="Vibrate">
           <Tooltip title="Vibration pattern for the device's vibration hardware to emit when the notification fires.">
-            {getFieldDecorator('vibrate')(
+            {getFieldDecorator('vibrate', { initialValue: '' })(
               <Input
                 prefix={<Icon type="trademark" style={{ color: 'rgba(0,0,0,.25)' }} />}
                 placeholder="Enter vibration pattern"
@@ -245,14 +263,14 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
         </Form.Item>
         <Form.Item label="Renotify">
           <Tooltip title="Specifies whether the user should be notified after a new notification replaces an old one.">
-            {getFieldDecorator('renotify')(
+            {getFieldDecorator('renotify', { initialValue: false })(
               <Checkbox />,
             )}
           </Tooltip>
         </Form.Item>
         <Form.Item label="Require action">
           <Tooltip title="Active until the user clicks or dismisses it.">
-            {getFieldDecorator('requireInteraction')(
+            {getFieldDecorator('requireInteraction', { initialValue: false })(
               <Checkbox />,
             )}
           </Tooltip>
