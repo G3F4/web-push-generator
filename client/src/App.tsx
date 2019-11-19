@@ -1,4 +1,4 @@
-import { Avatar, Button, Col, Layout, Row, Typography } from 'antd';
+import { Avatar, Button, Col, Layout, Row, Skeleton, Typography } from 'antd';
 import { BaseType } from 'antd/lib/typography/Base';
 import React, { useCallback, useEffect, useState } from 'react';
 import NotificationForm from './modules/notificationForm/NotificationForm';
@@ -37,13 +37,17 @@ export interface UserSubscription {
 
 const App: React.FC = () => {
   const [userSubscriptions, setUserSubscriptions] = useState<UserSubscription[]>([]);
+  const [loadingAdding, setLoadingAdding] = useState(false);
+  const [loadingList, setLoadingList] = useState(true);
   const handleActivateNotifications = useCallback(async () => {
+    setLoadingAdding(true);
     await registerSubscription();
 
     const { subscriptions } = await fetchUserSubscriptions();
 
+    setLoadingAdding(false);
     setUserSubscriptions(subscriptions);
-  }, [setUserSubscriptions]);
+  }, [setUserSubscriptions, setLoadingAdding]);
   const handleSubscriptionDeleted = useCallback(async () => {
     const { subscriptions } = await fetchUserSubscriptions();
 
@@ -51,7 +55,10 @@ const App: React.FC = () => {
   }, [setUserSubscriptions]);
 
   useEffect(() => {
-    fetchUserSubscriptions().then(({ subscriptions }) => setUserSubscriptions(subscriptions));
+    fetchUserSubscriptions().then(({ subscriptions }) => {
+      setUserSubscriptions(subscriptions);
+      setLoadingList(false);
+    });
   }, []);
 
   return (
@@ -90,28 +97,38 @@ const App: React.FC = () => {
           </Button>
           <Button onClick={testAllSubscriptions}>Test all subscriptions</Button>
         </Row>
-        <Row>
-          {userSubscriptions.map(userSubscription => (
-            <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={6} key={userSubscription.subscription.endpoint}>
-              <NotificationForm
-                // @ts-ignore
-                userSubscription={userSubscription}
-                // @ts-ignore
-                onDeleted={handleSubscriptionDeleted}
-                // @ts-ignore
-                onFormDataCopy={() => { console.log('TODO')}}
-                // @ts-ignore
-                onFormDataPaste={() => { console.log('TODO')}}
-                // @ts-ignore
-                onSend={async (notificationForm: any) => {
-                  const { title, ...notification } = notificationForm;
+        <Skeleton loading={loadingList} active>
+          <Row>
+            {userSubscriptions.map(userSubscription => (
+              <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={6} key={userSubscription.subscription.endpoint}>
+                <NotificationForm
+                  // @ts-ignore
+                  userSubscription={userSubscription}
+                  // @ts-ignore
+                  onDeleted={handleSubscriptionDeleted}
+                  // @ts-ignore
+                  onFormDataCopy={() => { console.log('TODO')}}
+                  // @ts-ignore
+                  onFormDataPaste={() => { console.log('TODO')}}
+                  // @ts-ignore
+                  onSend={async (notificationForm: any) => {
+                    const { title, ...notification } = notificationForm;
 
-                  await testSingleSubscription(userSubscription.subscription, title, notification)
-                }}
-              />
-            </Col>
-          ))}
-        </Row>
+                    await testSingleSubscription(userSubscription.subscription, title, notification)
+                  }}
+                />
+              </Col>
+            ))}
+            {loadingAdding && (
+              <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={6}>
+                <Skeleton active />
+                <Skeleton active />
+                <Skeleton active />
+                <Skeleton active />
+              </Col>
+            )}
+          </Row>
+        </Skeleton>
       </Content>
     </Layout>
   );
