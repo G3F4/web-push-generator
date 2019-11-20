@@ -96,7 +96,9 @@ const App: React.FC = () => {
               default: 'Ask for permission',
             }[Notification.permission] as BaseType}
           </Button>
-          <Button onClick={testAllSubscriptions}>Test all subscriptions</Button>
+          {userSubscriptions.length > 0 && (
+            <Button onClick={testAllSubscriptions}>Test all subscriptions</Button>
+          )}
         </Row>
         <Skeleton loading={loadingList} active>
           <Row>
