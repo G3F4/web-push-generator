@@ -14,6 +14,16 @@ function hasErrors(fieldsError: any) {
   });
 }
 
+//const showPersistentNotifications = async () => {
+//  const serviceWorker = await navigator.serviceWorker.ready;
+//  const notifications = await serviceWorker.getNotifications();
+//
+//  notifications.forEach(({ title, ...options }) => {
+//    //@ts-ignore
+//    serviceWorker.showNotification(title, options);
+//  });
+//};
+
 let id = 0;
 const UrlRegex = new RegExp('(http|ftp|https)://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?');
 
@@ -32,9 +42,11 @@ interface FormValues {
   icon: string;
   badge: string;
   image: string;
+  tag: boolean;
+  vibrate: boolean;
+  silent: boolean;
   renotify: boolean;
   requireInteraction: boolean;
-  silent: boolean;
   keys: any[];
   names: any[];
 }
@@ -311,15 +323,31 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
           formUtils={props.form}
           hint="Vibration pattern for the device's vibration hardware to emit when the notification fires."
           iconType="trademark"
-          label="Vibrate"
+          label="Vibrations"
           options={{ initialValue: '' }}
-          placeholder="Enter image url"
+          placeholder="Enter vibration pattern, i.e.: 100, 20, 50, 20, 60"
+        />
+        <FormInput
+          fieldId="tag"
+          formUtils={props.form}
+          hint="Tag for the notification."
+          iconType="trademark"
+          label="Tag"
+          options={{ initialValue: '' }}
+          placeholder="Enter tag"
         />
         <FormCheckbox
           fieldId="renotify"
           formUtils={props.form}
           hint="Specifies whether the user should be notified after a new notification replaces an old one."
           label="Renotify"
+          options={{ initialValue: false }}
+        />
+        <FormCheckbox
+          fieldId="silent"
+          formUtils={props.form}
+          hint="Specifies whether the notification should be silent, i.e., no sounds or vibrations should be issued, regardless of the device settings."
+          label="Silent"
           options={{ initialValue: false }}
         />
         <FormCheckbox
