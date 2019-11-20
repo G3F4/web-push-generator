@@ -3,8 +3,10 @@ self.addEventListener('push', async (event) => {
   console.info(['push:data'], data);
 
   await self.registration.showNotification(data.title, data.notification);
+  
+  self.addEventListener('notificationclick', function (event) {
+    console.info(['notificationclick'], event);
+  });
 });
 
-self.addEventListener('notificationclick', function (event) {
-  console.info(['notificationclick'], event);
-});
+
