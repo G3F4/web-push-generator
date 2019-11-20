@@ -1,8 +1,9 @@
-import { Button, Card, Checkbox, Dropdown, Form, Icon, Input, Menu, Modal, Tooltip } from 'antd';
+import { Button, Card, Checkbox, Dropdown, Form, Icon, Input, Menu, Modal, Tooltip, message } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { GetFieldDecoratorOptions, WrappedFormUtils } from 'antd/lib/form/Form';
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import deleteSingleSubscription from '../../deleteSingleSubscription';
+import testSingleSubscription from '../../testSingleSubscription';
 
 function hasErrors(fieldsError: any) {
   return Object.keys(fieldsError).some(field => {
@@ -103,23 +104,32 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
     getFieldsValue,
     setFields,
   } = props.form;
+  const [invalid, setInvalid] = useState(false);
 
   useEffect(() => {
     // To disabled submit button at the beginning.
     props.form.validateFields();
+//    showPersistentNotifications();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const sendNotification = (event: any) => {
     event.preventDefault();
-    props.form.validateFields((err, values) => {
+    props.form.validateFields(async (err, values) => {
       if (!err) {
         const { keys, names, ...rest } = values;
-
-        props.onSend({
+        const notificationForm = {
           actions: names ? names.filter(Boolean).map((name, index) => ({ action: index, title: name })) : [],
           ...rest,
-        });
+        };
+        const { title, ...notification } = notificationForm;
+        const { send } = await testSingleSubscription(props.userSubscription.subscription, title, notification);
+
+        if (!send) {
+          message.error('Notification not send. Probably subscription is not synced with any service worker. You can delete this subscription.', 5);
+        }
+
+        setInvalid(!send);
       }
     });
   };
@@ -242,6 +252,12 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
         key={props.userSubscription.subscription.endpoint}
         title={
           <>
+            {invalid && (
+              <Icon
+                style={{ fontSize: 32, color: 'rgb(255,0,3)', marginRight: 8 }}
+                type="warning"
+              />
+            )}
             {type ? (
             <Icon style={{ fontSize: 32 }} type={type} />
           ) : props.userSubscription.info.os}

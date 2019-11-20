@@ -6,22 +6,17 @@ import registerUserSubscription from './service-worker/registerUserSubscription'
 import testAllSubscriptions from './testAllSubscriptions';
 import testSingleSubscription from './testSingleSubscription';
 
-const { Header, Content } = Layout;
-const { Title, Text } = Typography;
-const registerSubscription = async () => {
-  try {
-    const registration = await navigator.serviceWorker.ready;
+async function registerSubscription() {
+  const registration = await navigator.serviceWorker.ready;
 
-    await registerUserSubscription(registration);
-  } catch (e) {
-    console.error(['registerSubscription.error'], e);
-  }
-};
-const fetchUserSubscriptions = async () => {
+  await registerUserSubscription(registration);
+}
+
+async function fetchUserSubscriptions() {
   const response = await fetch('/subscriptions');
 
   return await response.json();
-};
+}
 
 export interface Subscription {
   endpoint: string;
@@ -65,10 +60,10 @@ const App: React.FC = () => {
 
   return (
     <Layout>
-      <Header style={{ padding: 0 }}>
+      <Layout.Header style={{ padding: 0 }}>
         <Row align="middle" justify="center" type="flex">
           <Avatar shape="square" src="/favicon.ico" />
-          <Title
+          <Typography.Title
             level={2}
             style={{
               margin: 8,
@@ -76,12 +71,12 @@ const App: React.FC = () => {
               color: '#eee',
               whiteSpace: 'nowrap',
             }}
-          >Web Push Generator</Title>
+          >Web Push Generator</Typography.Title>
         </Row>
-      </Header>
-      <Content>
+      </Layout.Header>
+      <Layout.Content>
         <Row justify="center" style={{ margin: 8 }} type="flex">
-          <Text
+          <Typography.Text
             strong
             style={{ marginBottom: 8, whiteSpace: 'nowrap', marginRight: 8, textAlign: 'center', fontSize: 18 }}
             type={{
@@ -89,7 +84,7 @@ const App: React.FC = () => {
               granted: 'secondary',
               default: 'warning',
             }[Notification.permission] as BaseType}
-          >{`Notifications permission state: ${Notification.permission}`}</Text>
+          >{`Notifications permission state: ${Notification.permission}`}</Typography.Text>
           <Button disabled={Notification.permission === 'denied'} onClick={handleActivateNotifications}>
             {{
               denied: 'Not active',
@@ -120,8 +115,9 @@ const App: React.FC = () => {
                   // @ts-ignore
                   onSend={async (notificationForm: any) => {
                     const { title, ...notification } = notificationForm;
+                    const { send } = await testSingleSubscription(userSubscription.subscription, title, notification);
 
-                    await testSingleSubscription(userSubscription.subscription, title, notification)
+                    console.log(['testSingleSubscription.send'], send);
                   }}
                 />
               </Col>
@@ -136,7 +132,7 @@ const App: React.FC = () => {
             )}
           </Row>
         </Skeleton>
-      </Content>
+      </Layout.Content>
     </Layout>
   );
 };

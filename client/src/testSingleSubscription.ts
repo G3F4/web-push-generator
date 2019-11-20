@@ -2,7 +2,7 @@ import { Subscription } from './App';
 
 export default async function testUserSubscriptions(subscription: Subscription, title: string, notification: any) {
   try {
-    await fetch(`/subscriptions/test-single`, {
+    const response = await fetch(`/subscriptions/test-single`, {
       credentials: 'same-origin',
       method: 'POST',
       headers: {
@@ -11,6 +11,8 @@ export default async function testUserSubscriptions(subscription: Subscription, 
       },
       body: JSON.stringify({ subscription, title, notification }),
     });
+
+    return await response.json();
   } catch (e) {
     throw new Error(`error testing single subscription | ${e}`);
   }
