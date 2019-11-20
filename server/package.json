@@ -1,15 +1,15 @@
 {
   "name": "web-push-generator-server",
-  "main": "src/index.ts",
   "license": "MIT",
+  "main": "src/index.ts",
   "scripts": {
-    "start": "ts-node -r dotenv/config $npm_package_main",
-    "dev": "ts-node-dev --respawn --transpileOnly -r dotenv/config $npm_package_main",
-    "secure": "rm -rf src/https && mkdir src/https && openssl genrsa -out src/https/fastify.key 2048 && openssl req -new -x509 -key src/https/fastify.key -out src/https/fastify.crt -days 3650 -subj /CN=localhost",
     "build": "tsc -p tsconfig.prod.json",
-    "test": "echo \"no test specified\" && exit 0",
+    "dev": "ts-node-dev --respawn --transpileOnly -r dotenv/config $npm_package_main",
     "lint": "eslint -r dotenv/config './src/**/*.{ts,tsx}'",
-    "lint:fix": "eslint -r dotenv/config './src/**/*.{ts,tsx}' --fix"
+    "lint:fix": "eslint -r dotenv/config './src/**/*.{ts,tsx}' --fix",
+    "secure": "rm -rf src/https && mkdir src/https && openssl genrsa -out src/https/fastify.key 2048 && openssl req -new -x509 -key src/https/fastify.key -out src/https/fastify.crt -days 3650 -subj /CN=localhost",
+    "start": "ts-node -r dotenv/config $npm_package_main",
+    "test": "echo \"no test specified\" && exit 0"
   },
   "dependencies": {
     "@types/node": "12.12.6",

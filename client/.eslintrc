@@ -3,6 +3,11 @@
   "plugins": ["react", "@typescript-eslint", "prettier"],
   "parser": "@typescript-eslint/parser",
   "rules": {
+    "react/jsx-sort-props": ["error", {
+      "callbacksLast": true,
+      "shorthandFirst": true,
+      "ignoreCase": true
+    }],
     "padding-line-between-statements": [
       "error",
       { "blankLine": "always", "prev": "*", "next": ["return", "break", "continue"] },

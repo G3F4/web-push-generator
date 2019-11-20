@@ -15,7 +15,6 @@ function hasErrors(fieldsError: any) {
 }
 
 let id = 0;
-
 const UrlRegex = new RegExp('(http|ftp|https)://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?');
 
 export interface NotificationFormProps {
@@ -63,19 +62,18 @@ const FormInput = ({ formUtils, label, fieldId, placeholder, options, hint, icon
   const error = isFieldTouched(fieldId) && getFieldError(fieldId);
 
   return (
-    <Form.Item label={label} validateStatus={error ? 'error' : ''} help={error || ''}>
+    <Form.Item help={error || ''} label={label} validateStatus={error ? 'error' : ''}>
       <Tooltip title={hint}>
         {getFieldDecorator(fieldId, options)(
           <Input
-            prefix={<Icon type={iconType} style={{ color: 'rgba(0,0,0,.25)' }} />}
             placeholder={placeholder}
+            prefix={<Icon style={{ color: 'rgba(0,0,0,.25)' }} type={iconType} />}
           />,
         )}
       </Tooltip>
     </Form.Item>
   );
 };
-
 const FormCheckbox = ({ formUtils: { getFieldDecorator }, fieldId, label, hint, options }: FormCheckboxProps) => (
   <Form.Item label={label}>
     <Tooltip title={hint}>
@@ -85,7 +83,6 @@ const FormCheckbox = ({ formUtils: { getFieldDecorator }, fieldId, label, hint, 
     </Tooltip>
   </Form.Item>
 );
-
 const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProps> = (props) => {
   const {
     getFieldDecorator,
@@ -154,11 +151,12 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
   };
 
   getFieldDecorator('keys', { initialValue: [] });
+
   const keys = getFieldValue('keys');
   const actionsItems = keys.map((key: string, index: number) => (
     <Form.Item
-      label={['First action', 'Second action', 'Third action'][index]}
       key={key}
+      label={['First action', 'Second action', 'Third action'][index]}
     >
       {getFieldDecorator(`names[${key}]`)(
         <Input
@@ -173,7 +171,6 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
       />
     </Form.Item>
   ));
-
   const menu = (
     <Menu>
       <Menu.Item onClick={() => {
@@ -215,22 +212,13 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
       onSubmit={sendNotification}
     >
       <Card
-        key={props.userSubscription.subscription.endpoint}
-        title={
-          <>
-            {type ? (
-            <Icon type={type} style={{ fontSize: 32 }} />
-          ) : props.userSubscription.info.os}
-            {` ${props.userSubscription.info.browser}`}
-          </>
-        }
         extra={
             <div>
               <Button
-                type="primary"
-                htmlType="submit"
                 disabled={hasErrors(getFieldsError())}
+                htmlType="submit"
                 style={{ marginRight: 16 }}
+                type="primary"
               >
                 Send
               </Button>
@@ -239,14 +227,22 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
               </Dropdown>
             </div>
         }
+        key={props.userSubscription.subscription.endpoint}
+        title={
+          <>
+            {type ? (
+            <Icon style={{ fontSize: 32 }} type={type} />
+          ) : props.userSubscription.info.os}
+            {` ${props.userSubscription.info.browser}`}
+          </>
+        }
       >
         <FormInput
           fieldId="title"
-          label="Title"
-          placeholder="Enter title"
+          formUtils={props.form}
           hint="Title of notification will appear at the top of Your notification."
           iconType="trademark"
-          formUtils={props.form}
+          label="Title"
           options={{
             initialValue: '',
             rules: [{
@@ -254,23 +250,23 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
               message: 'Please input notification title.',
             }],
           }}
+          placeholder="Enter title"
         />
         <FormInput
           fieldId="body"
-          label="Body"
-          placeholder="Enter body"
+          formUtils={props.form}
           hint="Notification body text. It can be long, multiline text."
           iconType="trademark"
-          formUtils={props.form}
+          label="Body"
           options={{ initialValue: '' }}
+          placeholder="Enter body"
         />
         <FormInput
           fieldId="icon"
-          label="Icon"
-          placeholder="Enter icon url"
+          formUtils={props.form}
           hint="Icon displayed in notification."
           iconType="trademark"
-          formUtils={props.form}
+          label="Icon"
           options={{
             initialValue: '',
             rules: [{
@@ -278,14 +274,14 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
               message: 'Please input valid url.',
             }],
           }}
+          placeholder="Enter icon url"
         />
         <FormInput
           fieldId="badge"
-          label="Badge"
-          placeholder="Enter badge url"
+          formUtils={props.form}
           hint="Badge is icon displayed in mobile devices toolbar."
           iconType="trademark"
-          formUtils={props.form}
+          label="Badge"
           options={{
             initialValue: '',
             rules: [{
@@ -293,14 +289,14 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
               message: 'Please input valid url.',
             }],
           }}
+          placeholder="Enter badge url"
         />
         <FormInput
           fieldId="image"
-          label="Image"
-          placeholder="Enter image url"
+          formUtils={props.form}
           hint="Image displayed after notification body."
           iconType="trademark"
-          formUtils={props.form}
+          label="Image"
           options={{
             initialValue: '',
             rules: [{
@@ -308,34 +304,35 @@ const NotificationForm: FC<FormComponentProps<FormValues> & NotificationFormProp
               message: 'Please input valid url.',
             }],
           }}
+          placeholder="Enter image url"
         />
         <FormInput
           fieldId="vibrate"
-          label="Vibrate"
-          placeholder="Enter image url"
+          formUtils={props.form}
           hint="Vibration pattern for the device's vibration hardware to emit when the notification fires."
           iconType="trademark"
-          formUtils={props.form}
+          label="Vibrate"
           options={{ initialValue: '' }}
+          placeholder="Enter image url"
         />
         <FormCheckbox
           fieldId="renotify"
-          label="Renotify"
-          hint="Specifies whether the user should be notified after a new notification replaces an old one."
           formUtils={props.form}
+          hint="Specifies whether the user should be notified after a new notification replaces an old one."
+          label="Renotify"
           options={{ initialValue: false }}
         />
         <FormCheckbox
           fieldId="requireInteraction"
-          label="Require action"
-          hint="Active until the user clicks or dismisses it."
           formUtils={props.form}
+          hint="Active until the user clicks or dismisses it."
+          label="Require action"
           options={{ initialValue: false }}
         />
         {actionsItems}
         {keys.length < 3 && (
           <Form.Item label={['First action', 'Second action', 'Third action'][keys.length]}>
-            <Button type="dashed" onClick={addAction} style={{ width: '80%' }}>
+            <Button style={{ width: '80%' }} type="dashed" onClick={addAction}>
               <Icon type="plus" /> Add action
             </Button>
           </Form.Item>

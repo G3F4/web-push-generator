@@ -42,6 +42,7 @@ const App: React.FC = () => {
   const [loadingList, setLoadingList] = useState(true);
   const handleActivateNotifications = useCallback(async () => {
     setLoadingAdding(true);
+
     await registerSubscription();
 
     const { subscriptions } = await fetchUserSubscriptions();
@@ -65,7 +66,7 @@ const App: React.FC = () => {
   return (
     <Layout>
       <Header style={{ padding: 0 }}>
-        <Row type="flex" align="middle" justify="center">
+        <Row align="middle" justify="center" type="flex">
           <Avatar shape="square" src="/favicon.ico" />
           <Title
             level={2}
@@ -79,17 +80,17 @@ const App: React.FC = () => {
         </Row>
       </Header>
       <Content>
-        <Row type="flex" justify="center" style={{ margin: 8 }}>
+        <Row justify="center" style={{ margin: 8 }} type="flex">
           <Text
+            strong
+            style={{ marginBottom: 8, whiteSpace: 'nowrap', marginRight: 8, textAlign: 'center', fontSize: 18 }}
             type={{
               denied: 'danger',
               granted: 'secondary',
               default: 'warning',
             }[Notification.permission] as BaseType}
-            style={{ marginBottom: 8, whiteSpace: 'nowrap', marginRight: 8, textAlign: 'center', fontSize: 18 }}
-            strong
           >{`Notifications permission state: ${Notification.permission}`}</Text>
-          <Button onClick={handleActivateNotifications} disabled={Notification.permission === 'denied'}>
+          <Button disabled={Notification.permission === 'denied'} onClick={handleActivateNotifications}>
             {{
               denied: 'Not active',
               granted: 'Resend subscription',
@@ -100,23 +101,22 @@ const App: React.FC = () => {
             <Button onClick={testAllSubscriptions}>Test all subscriptions</Button>
           )}
         </Row>
-        <Skeleton loading={loadingList} active>
+        <Skeleton active loading={loadingList}>
           <Row>
             {userSubscriptions.map(userSubscription => (
-              <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={6} key={userSubscription.subscription.endpoint}>
+              <Col key={userSubscription.subscription.endpoint} lg={12} md={12} sm={24} xl={8} xs={24} xxl={6}>
                 <NotificationForm
+                  // @ts-ignore
+                  copiedNotification={copiedNotification}
                   // @ts-ignore
                   userSubscription={userSubscription}
                   // @ts-ignore
                   onDeleted={handleSubscriptionDeleted}
                   // @ts-ignore
                   onFormDataCopy={(notificationForm: any) => {
-                    console.log(['notificationForm'], notificationForm);
                     message.info('Form copied!');
                     setCopiedSubscription(notificationForm);
                   }}
-                  // @ts-ignore
-                  copiedNotification={copiedNotification}
                   // @ts-ignore
                   onSend={async (notificationForm: any) => {
                     const { title, ...notification } = notificationForm;
@@ -127,7 +127,7 @@ const App: React.FC = () => {
               </Col>
             ))}
             {loadingAdding && (
-              <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={6}>
+              <Col lg={12} md={12} sm={24} xl={8} xs={24} xxl={6}>
                 <Skeleton active />
                 <Skeleton active />
                 <Skeleton active />

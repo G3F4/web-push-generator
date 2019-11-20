@@ -2,26 +2,12 @@
   "name": "web-push-generator-client",
   "license": "MIT",
   "scripts": {
-    "start": "HTTPS=true react-app-rewired start",
     "build": "HTTPS=true react-app-rewired build",
-    "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "lint": "eslint './src/**/*.{ts,tsx}'",
-    "lint:fix": "eslint './src/**/*.{ts,tsx}' --fix"
-  },
-  "proxy": "https://0.0.0.0:5555/",
-  "dependencies": {
-    "@types/jest": "24.0.22",
-    "@types/node": "12.12.6",
-    "@types/react": "16.9.11",
-    "@types/react-dom": "16.9.4",
-    "antd": "3.25.1",
-    "babel-plugin-import": "1.12.2",
-    "dotenv": "8.2.0",
-    "react": "16.11.0",
-    "react-dom": "16.11.0",
-    "react-scripts": "3.2.0",
-    "typescript": "3.7.2"
+    "lint:fix": "eslint './src/**/*.{ts,tsx}' --fix",
+    "start": "HTTPS=true react-app-rewired start",
+    "test": "react-app-rewired test"
   },
   "browserslist": {
     "production": [
@@ -35,16 +21,32 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "customize-cra": "0.8.0",
-    "eslint-plugin-prettier": "3.1.1",
-    "react-app-rewired": "2.1.5"
-  },
   "jest": {
     "globals": {
       "Notification": {
         "permission": "granted"
       }
     }
-  }
+  },
+  "dependencies": {
+    "@types/jest": "24.0.22",
+    "@types/node": "12.12.6",
+    "@types/react": "16.9.11",
+    "@types/react-dom": "16.9.4",
+    "antd": "3.25.1",
+    "babel-plugin-import": "1.12.2",
+    "dotenv": "8.2.0",
+    "react": "16.11.0",
+    "react-dom": "16.11.0",
+    "react-scripts": "3.2.0",
+    "typescript": "3.7.2"
+  },
+  "devDependencies": {
+    "customize-cra": "0.8.0",
+    "eslint-config-prettier": "6.7.0",
+    "eslint-plugin-prettier": "3.1.1",
+    "prettier": "1.19.1",
+    "react-app-rewired": "2.1.5"
+  },
+  "proxy": "https://0.0.0.0:5555/"
 }
